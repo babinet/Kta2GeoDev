@@ -103,11 +103,15 @@ done
 }
 
 # Declare the array
-Menu=('GeoRefIGC'  'GeoRef Ony IDC' 'Rsync Only' 'WFS and TEXT Layer' 'Geoserver_operations' 'kmz2csv' 'Observatoire_Long_Lat-Converter' )
+Menu=('GeoRef Ony IDC' 'Rsync Only' 'WFS and TEXT Layer from list' 'WFS and TEXT Layer' 'Geoserver_operations' 'kmz2csv' 'Observatoire_Long_Lat-Converter' )
 
 # Call the subroutine to create the menu
 menu_from_array "${Menu[@]}"
 
+if [ "$item" = "WFS and TEXT Layer from list" ]
+then
+./WFS_Layers_fromCsv.sh
+fi
 if [ "$item" = "WFS and TEXT Layer" ]
 then
 ./WFS_Layers.sh

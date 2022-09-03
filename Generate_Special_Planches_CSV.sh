@@ -42,9 +42,6 @@ IFS=$'\n'       # Processing line
 set -f          # disable globbing
 
 
-
-#elif [[ "$TiffSource" =~ "../26-50-union_"* ]]||[[ "$TiffSource" =~ "../Feuille-282-union_"* ]]||[[ "$TiffSource" =~ "../55U-union_"* ]]
-
 for list_planche_Pour_corners in $(cat tmp/list_planche_Pour_corners_special_Cases.txt)
 do
 planche_name=$(echo "$list_planche_Pour_corners" |awk -F'"../_Source_Standard_Croped_TIFF/' '{print $2}'|awk -F'"' '{print $1}')

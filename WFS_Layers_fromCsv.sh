@@ -35,47 +35,88 @@ then
 rm -R tmp/_NodesMap
 fi
 mkdir -p tmp/_NodesMap
-echo "${bg_blue}${white}---> Hello I'm WFS_Layers.sh${reset}"
-echo "${white}---> I'm Doing WFS Nodes from IDCPARIS Maptype in _Output_3857       ${orange}: IDCPARIS"
+echo "${bg_blue}${white}---> Hello I'm WFS_Layers_fromCsv.sh${reset}"
+echo "${white}---> I'm Doing WFS Nodes from IDCPARIS Maptype ${orange}: IDCPARIS __ALL_CSV_Image_HEADER.csv"
+
+
+
+
+#reed -p "${white}--->  Execute ${green} on distant server
+#SCP auth + Links"
+
+echo "${white}---> Run this command on distant machine in        ${green}: cd /private_file/Raw_map_EPSG_3857/Geotiff/"
+echo "${red}sudo${orange} ./List_IDC_csv_tif.sh"
+read -p "Once the process has finished on the distant server, ${orange}press Enter !"
+echo "${orange}---> DONE !"
+
+
+if [ -f Server_Port.cfg ]
+then
+echo "${green}---> Server.cfg found"
+else
+read -p "What is the server name .eg : sous-paris.com ? : " Server_SCP
+echo "$Server_SCP" > Server_SCP.cfg
+
+read -p "What is the server port .eg :  1777 ? : " Server_port
+echo "$Server_port" > Server_Port.cfg
+
+read -p "What is the server user .eg :  philibert ? : " Server_User
+echo "$Server_User" > User_SCP.cfg
+
+fi
+Port_SCP=$(cat Server_Port.cfg)
+Server_SCP=$(cat Server_SCP.cfg)
+User_scp=$(cat User_SCP.cfg)
+
+echo "${white}---> From the ${orange}Server_SCP.cfg Server_Port.cfg${white} the server name is${orange} $Server_SCP${white} port ${orange}$Port_SCP"
+echo "${white}---> The command shoult be : ${green}scp -P "$Port_SCP" "$User_scp"@"$Server_SCP":/private_file/Raw_map_EPSG_3857/Geotiff/_ALL_CSV_Image_HEADER.csv ../_Output_CSVs/_ALL_CSV_Image_HEADER.csv"
+echo "                                   : ${green}scp -P "$Port_SCP" "$User_scp"@"$Server_SCP":/private_file/Raw_map_EPSG_3857/Geotiff/_ALL_CSV_Image_No_HEADER.csv ../_Output_CSVs/_ALL_CSV_Image_No_HEADER.csv"
+scp -P "$Port_SCP" "$User_scp"@"$Server_SCP":/private_file/Raw_map_EPSG_3857/Geotiff/_ALL_CSV_Image_HEADER.csv ../_Output_CSVs/_ALL_CSV_Image_HEADER.csv
+scp -P "$Port_SCP" "$User_scp"@"$Server_SCP":/private_file/Raw_map_EPSG_3857/Geotiff/_ALL_CSV_Image_No_HEADER.csv ../_Output_CSVs/_ALL_CSV_Image_No_HEADER.csv
+
 
 if [ -f tmp/WFSTEMP ]
 then
 rm tmp/WFSTEMP
 fi
 
-find ../_Output_3857/ -name "*.tif" | sed 's/\/\//\//g'> tmp/FoundTiFTagged
+
+HeaderFromCSV=$(cat ../_Output_CSVs/_ALL_CSV_Image_HEADER.csv|awk 'NR == 1' |sed 's/\: OutputFilenameSeul/OutputFilenameSeul/g')
+
+
+#find /private_file/Raw_map_EPSG_3857/Geotiff/ -name "*.tif" | sed 's/\/\//\//g'> tmp/FoundTiFTagged
 
 IFS=$'\n'       # Processing full line (ignoring spaces)
 set -f          # disable globbing
 
-for LineGotif in $(cat tmp/FoundTiFTagged)
+for LineGotif in $(cat ../_Output_CSVs/_ALL_CSV_Image_No_HEADER.csv)
 do
-
 echo "${red}---> Removing old tmp_bash"
+echo "$white $HeaderFromCSV"
 if [ -f tmp/tmp_bash ]
 then
 rm tmp/tmp_bash
 fi
 
-
-echo "$white $LineGotif"
-exiftool $LineGotif |awk '/Description/'|sed 's/Description                     //g'|sed 's/||/|THIS_IS_AN_EMPTY_CELL|/g'|sed 's/||/|THIS_IS_AN_EMPTY_CELL|/g'|sed 's/THIS_IS_A_LINEBREAK./\
-/g' |sed 's/Description                     : //g' |sed 's/THIS_IS_A_LINEBREAK./\
-/g' > tmp/exiftool
+echo "$HeaderFromCSV
+$LineGotif" > tmp/exiftool
+#exiftool $LineGotif |awk '/Keywords/'|sed 's/Keywords                        \: //g'|sed 's/||/|THIS_IS_AN_EMPTY_CELL|/g'|sed 's/||/|THIS_IS_AN_EMPTY_CELL|/g'|sed 's/THIS_IS_A_LINEBREAK./\
+#/g' |sed 's/Keywords                        \: //g' |sed 's/THIS_IS_A_LINEBREAK./\
+#/g' > tmp/exiftool
 
 
 Maptype=$(cat tmp/exiftool|awk -F'|' 'NR==1 {for (i=1; i<=NF; i++) {f[$i] = i}}; { print $(f["MapType"]) }' OFS='|' |sed 's/THIS_IS_AN_EMPTY_CELL//g'|awk 'NR == 2')
 
+echo $purple $Maptype Maptype
 
+read
 
-
-
-if [[ "$Maptype" == IDCPARIS ]]
+if [ $Maptype == IDCPARIS ]
 then
 echo "${white}---> Maptype                                                         ${green}: IDCPARIS"
 echo "${white}---> Looking for variables                                           ${orange}: tmp/exitooltmp.csv"
 
-cat tmp/exiftool
+
 NomMachine=$(cat tmp/exiftool|awk -F'|' 'NR==1 {for (i=1; i<=NF; i++) {f[$i] = i}}; { print $(f["NomMachine"]) }' OFS='|' |sed 's/THIS_IS_AN_EMPTY_CELL//g'|awk 'NR == 2')
 echo "${white}---> \$NomMachine                                                     ${orange}: $NomMachine"
 echo NomMachine=\"$NomMachine\" >> tmp/tmp_bash
@@ -237,14 +278,17 @@ echo BasicNordEst4326=\"$BasicNordEst4326\" >> tmp/tmp_bash
 
 
 echo "$purple CloudPNGSource $CloudPNGSource CloudZIPSource $CloudZIPSource $CloudTIFSource $CloudTIFSource"
-echo "$Year|$NodeID|$OriginalPost1980Name|$OldNum|$Seine|$NomMachine|$NomMachineLowCap|$OutputFilenameSeul|$LayerHumanTitle|$WorkspaceName|$WorkspaceNameLowCap|$body|$WKT_Map_Extent|$idsource|$targetid|$layer_attribut|$Default_IDC_GEOMETRY|$PNGHTTP|$ZipHTTP$TiffHTTP|$ZipCloudpath|$TiffPrivatePath|$BasicNordOuest|$BasicSudOuest|$BasicSudEst|$BasicNordEst|$BasicNordOuest3857|$BasicSudOuest3857|$BasicSudEst3857|$BasicNordEst3857|$BasicNordOuest4326|$BasicSudOuest4326|$BasicSudEst4326|$BasicNordEst4326|$ZipCloudpath|$PNGCloudpath|$TiffCloudpath|" >> tmp/_NodesMap/WFS_Node_"$NodeID"
-
+touch tmp/_NodesMap/WFS_Node_$NodeID
+printf "$Year|$NodeID|$OriginalPost1980Name|$OldNum|$Seine|$NomMachine|$NomMachineLowCap|$OutputFilenameSeul|$LayerHumanTitle|$WorkspaceName|$WorkspaceNameLowCap|$body|$WKT_Map_Extent|$idsource|$targetid|$layer_attribut|$Default_IDC_GEOMETRY|$PNGHTTP|$ZipHTTP$TiffHTTP|$ZipCloudpath|$TiffPrivatePath|$BasicNordOuest|$BasicSudOuest|$BasicSudEst|$BasicNordEst|$BasicNordOuest3857|$BasicSudOuest3857|$BasicSudEst3857|$BasicNordEst3857|$BasicNordOuest4326|$BasicSudOuest4326|$BasicSudEst4326|$BasicNordEst4326|$ZipCloudpath|$PNGCloudpath|$TiffCloudpath|" >> tmp/_NodesMap/WFS_Node_$NodeID
+echo "$red tmp/_NodesMap/WFS_Node_"$NodeID""
+echo  "$Year|$NodeID|$OriginalPost1980Name|$OldNum|$Seine|$NomMachine|$NomMachineLowCap|$OutputFilenameSeul|$LayerHumanTitle|$WorkspaceName|$WorkspaceNameLowCap|$body|$WKT_Map_Extent|$idsource|$targetid|$layer_attribut|$Default_IDC_GEOMETRY|$PNGHTTP|$ZipHTTP$TiffHTTP|$ZipCloudpath|$TiffPrivatePath|$BasicNordOuest|$BasicSudOuest|$BasicSudEst|$BasicNordEst|$BasicNordOuest3857|$BasicSudOuest3857|$BasicSudEst3857|$BasicNordEst3857|$BasicNordOuest4326|$BasicSudOuest4326|$BasicSudEst4326|$BasicNordEst4326|$ZipCloudpath|$PNGCloudpath|$TiffCloudpath|"
+read
 else
 echo "${white}---> Maptype                                                          ${orange}: $Maptype"
 fi
 done
 
-
+read
 
 #Finising WFS NODE
 IFS=$'\n'       # Processing full line (ignoring spaces)
@@ -370,7 +414,7 @@ done
 echo "NodeID|OriginalPost1980Name|OldNum|Seine|Year|WorkspaceNameLowCap|WorkspaceName|body|WKT_Map_Extent|idsource|targetid|layer_attribut|Default_IDC_GEOMETRY|PNGHTTP|ZipHTTP|TiffHTTP|BasicNordOuest|BasicSudOuest|BasicSudEst|BasicNordEst|BasicNordOuest3857|BasicSudOuest3857|BasicSudEst3857|BasicNordEst3857|BasicNordOuest4326|BasicSudOuest4326|BasicSudEst4326|BasicNordEst4326|ZipCloudpath|PNGCloudpath|TiffCloudpath" > ../_Output_CSVs/_IMPORT_WFS_LAYERS.csv
 cat tmp/WFSTEMP >> ../_Output_CSVs/_IMPORT_WFS_LAYERS.csv
 
-echo "${bg_white}${black}---> Good Bye ! form WFS_Layers.sh${reset}"
+echo "${bg_white}${black}---> Good Bye ! form WFS_Layers_fromCsv.sh${reset}"
 
 
 #add_planche24-50_ScanHD_1988

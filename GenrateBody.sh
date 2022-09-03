@@ -67,7 +67,7 @@ echo "<div class="$QUOTE"btn-group $WorkspaceNameLowCap btn-group-xs"$QUOTE" yea
 </div>
 </div>
 </div>
-<div class="$QUOTE"btn btn-dark btn-xs showlayer"$QUOTE" data-img="$QUOTE"$PNGHTTP"$QUOTE" data-original-title="$QUOTE""$ShortTitleHeader""$QUOTE" data-toggle="$QUOTE"popover"$QUOTE" layer="$QUOTE"add_planche$NomMachine"$QUOTE" addlayertolist="$QUOTE"$TiffPrivatePath"$QUOTE">Voir</div>
+<div class="$QUOTE"btn btn-dark btn-xs showlayer"$QUOTE" data-img="$QUOTE"$PNGHTTP"$QUOTE" data-original-title="$QUOTE""$ShortTitleHeader""$QUOTE" data-toggle="$QUOTE"popover"$QUOTE" layer="$QUOTE"add_planche_$NomMachine"$QUOTE" addlayertolist="$QUOTE"$TiffPrivatePath"$QUOTE">Voir</div>
 <div class="$QUOTE"btn btn-dark btn-xs hidelayer"$QUOTE" layer="$QUOTE"planche_"$NomMachine"_rm"$QUOTE" removelayerfromlist="$DoubleQuote"$TiffPrivatePath"$DoubleQuote">Cacher</div>
 <a class="$QUOTE"btn btn-dark btn-xs download-tif"$QUOTE" href="$QUOTE"$TiffHTTP"$QUOTE" data-toggle="$QUOTE"tooltip"$QUOTE" data-original-title="$QUOTE"$LayerHumanTitle"$QUOTE">$LayerHumanShortName<span class="$QUOTE"glyphicon glyphicon-download-alt"$QUOTE"></span></a>
 <a class="$QUOTE"btn btn-dark btn-xs download-zip"$QUOTE" href="$QUOTE"$ZipHTTP"$QUOTE" data-toggle="$QUOTE"tooltip"$QUOTE" data-original-title="$QUOTE"$TheZipNameTooltip"$QUOTE">$LayerHumanShortName .WLD + .PRJ<span class="$QUOTE"glyphicon glyphicon-download-alt"$QUOTE"></span></a>

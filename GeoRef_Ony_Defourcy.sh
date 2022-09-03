@@ -276,7 +276,7 @@ Cleaned_Name=$(echo "$NameNoExt"|sed 's/-Special-union//g' |sed 's/-B-union//g' 
 
 
 
-
+# Begin Rules
 
 
 
@@ -521,7 +521,7 @@ mv ../_Output_3857/P00_Planche_0_Assemblage_DeFourcy_1958.tif ../_TRASH_TEMP/"$F
 fi
 gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -dstalpha temp.tif ../_Output_3857/P00_Planche_0_Assemblage_DeFourcy_1958.tif
 
-
+# End Rules
 
 
 

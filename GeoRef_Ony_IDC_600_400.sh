@@ -1,9 +1,5 @@
 #!/bin/bash
 #awk 'FNR==NR{a[$0];next}!($0 in a)' A.txt B.txt | awk '!seen[$0]++'
-
-
-# exiftool JPG + info detail in wldzip.sh tmp/csv + filesize du zip + . txt info
-
 orange=`tput setaf 11`
 bg_orange=`tput setab 178`
 purple=`tput setaf 13`
@@ -102,7 +98,7 @@ echo StorageLocation=\"$StorageLocation\" >> tmp/variable_invariable
 echo dir=\"$dir\" >> tmp/variable_invariable
 
 echo "${white}---> Generating special Maps information"
-./Generate_Special_Planches_CSV.sh
+#./Generate_Special_Planches_CSV.sh
 source tmp/variable_invariable
 
 # Zero de l'Observatoire 3857
@@ -131,39 +127,8 @@ echo "${white}---> Cleanup Finder color tag to unprocessed file \$TiffSource    
 
 echo "${white}---> Select Map Type                                                 ${orange}: $MapType${white}"
 
-# Map Type
-Choose_me ()
-{
 
-select select_item; do
-# Check menu item number
-if [ 1 -le "$REPLY" ] && [ "$REPLY" -le $# ];
-
-then
-echo "Running $select_item..."
-break;
-else
-echo "Erreur - Choisir parmis 1-$#"
-fi
-done
-}
-
-# Declare the array
-Menu=( 'IDCPARIS' 'OtherMaps' )
-
-# Call the subroutine to create the menu
-Choose_me "${Menu[@]}"
-
-if [ "$select_item" = IDCPARIS ]
-then
 MapType="IDCPARIS"
-echo "${white}---> \$MapType                                                        ${orange}: $MapType"
-fi
-if [ "$select_item" = OtherMaps ]
-then
-MapType="OtherMaps"
-echo "${white}---> \$MapType                                                        ${orange}: $MapType"
-fi
 echo MapType=\"$MapType\" >> tmp/variable_invariable
 
 python finder_colors.py none $AllTifOnOneLine 2>&1 &>/dev/null
@@ -222,14 +187,13 @@ echo "# Layer's Attribut" >> tmp/tmp_bash
 layer_attribut="$NomMachine"
 echo layer_attribut=\"$NomMachine\" >> tmp/tmp_bash
 
-targetid=$(echo planche"$NomMachine")
+targetid=$(echo planche_"$NomMachine")
 echo targetid=\"$targetid\" >> tmp/tmp_bash
-idsource=$(echo add_planche"$NomMachine")
+idsource=$(echo add_planche_"$NomMachine")
 echo idsource=\"$idsource\" >> tmp/tmp_bash
-
+echo TiffSource=\"$TiffSource\" >> tmp/tmp_bash
 
 # Files Source, Soft and Hard path
-#
 echo "### Files" >> tmp/tmp_bash
 #Tiff :
 #TiffCloudpath
@@ -265,1647 +229,17 @@ echo PNGCloudpath=\"$PNGCloudpath\" >> tmp/tmp_bash
 #PNGHTTP
 PNGHTTP=$(echo /system/files/Raw_map_EPSG_3857/PNG/"$OutputFileNoExt".png)
 echo "${white}---> \$PNGHTTP                                                        ${orange}: $PNGHTTP"
-echo "${white}---> Processing \$TiffSource                                          ${orange}: $TiffSource"
+echo "${white}###########################################################################################################################################################
+---> Processing \$TiffSource                                          ${orange}: $TiffSource
+${white}###########################################################################################################################################################"
 echo PNGHTTP=\"$PNGHTTP\" >> tmp/tmp_bash
 Cleaned_Name=$(echo "$NameNoExt"|sed 's/-Special-union//g' |sed 's/-B-union//g' |sed 's/-union_//g'| sed 's/-union_//g')
 
+echo Cleaned_Name=\"$Cleaned_Name\" >> tmp/tmp_bash
+./AbsOrd.sh
 
-#Began Rules AbsOrd
-if [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/27A_"* ]]
-then
-Ordinate=11
-Abscissa=31
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/27B_"* ]]
-then
-Ordinate=12
-Abscissa=31
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/27F_"* ]]
-then
-Ordinate=11
-Abscissa=32
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/27K_"* ]]
-then
-Ordinate=11
-Abscissa=33
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/27L_"* ]]
-then
-Ordinate=12
-Abscissa=33
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/27P_"* ]]
-then
-Ordinate=11
-Abscissa=34
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/27Q_"* ]]
-then
-Ordinate=12
-Abscissa=34
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/27X_"* ]]
-then
-Ordinate=14
-Abscissa=35
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/35D_"* ]]
-then
-Ordinate=9
-Abscissa=36
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/35O_"* ]]
-then
-Ordinate=10
-Abscissa=38
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/35Y_"* ]]
-then
-Ordinate=11
-Abscissa=38
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/36U_"* ]]
-then
-Ordinate=11
-Abscissa=40
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/44E_"* ]]
-then
-Ordinate=10
-Abscissa=41
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/45A_"* ]]
-then
-Ordinate=11
-Abscissa=41
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/61Y_"* ]]
-then
-Ordinate=15
-Abscissa=55
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/62J_"* ]]
-then
-Ordinate=20
-Abscissa=52
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/62P_"* ]]
-then
-Ordinate=16
-Abscissa=54
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/62R_"* ]]
-then
-Ordinate=18
-Abscissa=54
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/62T_"* ]]
-then
-Ordinate=20
-Abscissa=54
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/62U_"* ]]
-then
-Ordinate=16
-Abscissa=55
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/62V_"* ]]
-then
-Ordinate=17
-Abscissa=55
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/62Y_"* ]]
-then
-Ordinate=20
-Abscissa=55
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63K_"* ]]
-then
-Ordinate=21
-Abscissa=53
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63P_"* ]]
-then
-Ordinate=21
-Abscissa=54
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63Q_"* ]]
-then
-Ordinate=22
-Abscissa=54
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63R_"* ]]
-then
-Ordinate=23
-Abscissa=54
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63U_"* ]]
-then
-Ordinate=21
-Abscissa=55
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63V_"* ]]
-then
-Ordinate=22
-Abscissa=55
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63W_"* ]]
-then
-Ordinate=23
-Abscissa=55
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63X_"* ]]
-then
-Ordinate=24
-Abscissa=55
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/66K_"* ]]
-then
-Ordinate=36
-Abscissa=53
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/70E_"* ]]
-then
-Ordinate=15
-Abscissa=56
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/70J_"* ]]
-then
-Ordinate=15
-Abscissa=57
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/70O_"* ]]
-then
-Ordinate=15
-Abscissa=58
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71A_"* ]]
-then
-Ordinate=16
-Abscissa=56
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71B_"* ]]
-then
-Ordinate=17
-Abscissa=56
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71C_"* ]]
-then
-Ordinate=18
-Abscissa=56
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71D_"* ]]
-then
-Ordinate=19
-Abscissa=56
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71E_"* ]]
-then
-Ordinate=20
-Abscissa=56
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71F_"* ]]
-then
-Ordinate=16
-Abscissa=57
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71G_"* ]]
-then
-Ordinate=17
-Abscissa=57
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71H_"* ]]
-then
-Ordinate=18
-Abscissa=57
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71I_"* ]]
-then
-Ordinate=19
-Abscissa=57
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71J_"* ]]
-then
-Ordinate=20
-Abscissa=57
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71K_"* ]]
-then
-Ordinate=16
-Abscissa=58
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71L_"* ]]
-then
-Ordinate=17
-Abscissa=58
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71M_"* ]]
-then
-Ordinate=18
-Abscissa=58
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71N_"* ]]
-then
-Ordinate=19
-Abscissa=58
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71O_"* ]]
-then
-Ordinate=20
-Abscissa=58
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71R_"* ]]
-then
-Ordinate=18
-Abscissa=59
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71S_"* ]]
-then
-Ordinate=19
-Abscissa=59
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71T_"* ]]
-then
-Ordinate=20
-Abscissa=59
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71W_"* ]]
-then
-Ordinate=18
-Abscissa=60
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71V_"* ]]
-then
-Ordinate=17
-Abscissa=60
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71X_"* ]]
-then
-Ordinate=19
-Abscissa=60
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71Y_"* ]]
-then
-Ordinate=20
-Abscissa=60
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72A_"* ]]
-then
-Ordinate=21
-Abscissa=56
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72B_"* ]]
-then
-Ordinate=22
-Abscissa=56
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72C_"* ]]
-then
-Ordinate=23
-Abscissa=56
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72D_"* ]]
-then
-Ordinate=24
-Abscissa=56
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72F_"* ]]
-then
-Ordinate=21
-Abscissa=57
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72G_"* ]]
-then
-Ordinate=22
-Abscissa=57
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72H_"* ]]
-then
-Ordinate=23
-Abscissa=57
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72I_"* ]]
-then
-Ordinate=24
-Abscissa=57
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72K_"* ]]
-then
-Ordinate=21
-Abscissa=58
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72L_"* ]]
-then
-Ordinate=22
-Abscissa=58
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72M_"* ]]
-then
-Ordinate=23
-Abscissa=58
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72N_"* ]]
-then
-Ordinate=24
-Abscissa=58
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72P_"* ]]
-then
-Ordinate=21
-Abscissa=59
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72Q_"* ]]
-then
-Ordinate=22
-Abscissa=59
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72R_"* ]]
-then
-Ordinate=23
-Abscissa=59
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72S_"* ]]
-then
-Ordinate=24
-Abscissa=59
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72U_"* ]]
-then
-Ordinate=21
-Abscissa=60
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72V_"* ]]
-then
-Ordinate=22
-Abscissa=60
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72W_"* ]]
-then
-Ordinate=23
-Abscissa=60
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/72X_"* ]]
-then
-Ordinate=24
-Abscissa=60
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/73D_"* ]]
-then
-Ordinate=29
-Abscissa=56
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/73R_"* ]]
-then
-Ordinate=28
-Abscissa=59
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/80C_"* ]]
-then
-Ordinate=18
-Abscissa=61
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/80D_"* ]]
-then
-Ordinate=19
-Abscissa=61
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/80E_"* ]]
-then
-Ordinate=20
-Abscissa=61
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/82J_"* ]]
-then
-Ordinate=20
-Abscissa=62
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/81A_"* ]]
-then
-Ordinate=21
-Abscissa=61
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/81B_"* ]]
-then
-Ordinate=22
-Abscissa=61
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/81C_"* ]]
-then
-Ordinate=23
-Abscissa=61
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/81F_"* ]]
-then
-Ordinate=21
-Abscissa=62
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/81G_"* ]]
-then
-Ordinate=22
-Abscissa=62
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/81H_"* ]]
-then
-Ordinate=23
-Abscissa=62
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/81L_"* ]]
-then
-Ordinate=22
-Abscissa=63
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/81D_"* ]]
-then
-Ordinate=24
-Abscissa=61
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-147_"* ]]
-then
-Ordinate=19
-Abscissa=43
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/95D_"* ]]
-then
-Ordinate=19
-Abscissa=71
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/95E_"* ]]
-then
-Ordinate=20
-Abscissa=71
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/95I_"* ]]
-then
-Ordinate=19
-Abscissa=72
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/95J_"* ]]
-then
-Ordinate=20
-Abscissa=72
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/96A_"* ]]
-then
-Ordinate=21
-Abscissa=71
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/96F_"* ]]
-then
-Ordinate=21
-Abscissa=72
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-#
-## Ancienne Numérotation / EXEMPLE: Feuille 25-50 = Feuille 281
-#
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-14_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/29T_"* ]]
-then
-Ordinate=25
-Abscissa=34
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-59_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40G_"* ]]
-then
-Ordinate=32
-Abscissa=37
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-15_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/30P_"* ]]
-then
-Ordinate=26
-Abscissa=34
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-26_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/29Y_"* ]]
-then
-Ordinate=25
-Abscissa=35
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-27_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/30U_"* ]]
-then
-Ordinate=26
-Abscissa=35
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-28_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/30V_"* ]]
-then
-Ordinate=27
-Abscissa=35
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/36K_"* ]]
-then
-Ordinate=11
-Abscissa=38
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/36P_"* ]]
-then
-Ordinate=11
-Abscissa=39
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/18Q_"* ]]
-then
-Ordinate=12
-Abscissa=29
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-39_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/38E_"* ]]
-then
-Ordinate=25
-Abscissa=36
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-40_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/39A_"* ]]
-then
-Ordinate=26
-Abscissa=36
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-41_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/39B_"* ]]
-then
-Ordinate=27
-Abscissa=36
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-42_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/39C_"* ]]
-then
-Ordinate=28
-Abscissa=36
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-45_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40A_"* ]]
-then
-Ordinate=31
-Abscissa=36
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-46_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40B_"* ]]
-then
-Ordinate=32
-Abscissa=36
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-253_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/57L_"* ]]
-then
-Ordinate=32
-Abscissa=48
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-47_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40C_"* ]]
-then
-Ordinate=33
-Abscissa=36
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-53_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/39F_"* ]]
-then
-Ordinate=26
-Abscissa=37
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-54_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/39G_"* ]]
-then
-Ordinate=27
-Abscissa=37
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-55_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/39H_"* ]]
-then
-Ordinate=28
-Abscissa=37
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-57_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/39J_"* ]]
-then
-Ordinate=30
-Abscissa=37
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-58_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40F_"* ]]
-then
-Ordinate=31
-Abscissa=37
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-60_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40H_"* ]]
-then
-Ordinate=33
-Abscissa=37
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/43G_"* ]]
-then
-Ordinate=47
-Abscissa=37
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-72_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/39O_"* ]]
-then
-Ordinate=30
-Abscissa=38
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-73_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40K_"* ]]
-then
-Ordinate=31
-Abscissa=38
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-77_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/37S_"* ]]
-then
-Ordinate=19
-Abscissa=39
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-88_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/39T_"* ]]
-then
-Ordinate=30
-Abscissa=39
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-89_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40P_"* ]]
-then
-Ordinate=31
-Abscissa=39
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-106_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40U_"* ]]
-then
-Ordinate=31
-Abscissa=40
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-107_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40V_"* ]]
-then
-Ordinate=32
-Abscissa=40
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-110_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/46C_"* ]]
-then
-Ordinate=18
-Abscissa=41
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-111_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/46D_"* ]]
-then
-Ordinate=19
-Abscissa=41
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-112_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/46E_"* ]]
-then
-Ordinate=20
-Abscissa=41
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-113_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/47A_"* ]]
-then
-Ordinate=33-37
-Abscissa=41
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-128_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/46H_"* ]]
-then
-Ordinate=18
-Abscissa=42
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-129_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/46I_"* ]]
-then
-Ordinate=19
-Abscissa=42
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-130_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/46J_"* ]]
-then
-Ordinate=20
-Abscissa=42
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-142_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/49G_"* ]]
-then
-Ordinate=32
-Abscissa=42
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-143_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/49H_"* ]]
-then
-Ordinate=33
-Abscissa=42
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-146_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/46M_"* ]]
-then
-Ordinate=18
-Abscissa=43
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-160_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/49L_"* ]]
-then
-Ordinate=32
-Abscissa=43
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-161_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/49M_"* ]]
-then
-Ordinate=33
-Abscissa=43
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-162_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/49N_"* ]]
-then
-Ordinate=34
-Abscissa=43
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-164_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/46R_"* ]]
-then
-Ordinate=18
-Abscissa=44
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-165_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/46S_"* ]]
-then
-Ordinate=19
-Abscissa=44
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-207_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55D_"* ]]
-then
-Ordinate=24
-Abscissa=46
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-208_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55E_"* ]]
-then
-Ordinate=25
-Abscissa=46
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-209_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56A_"* ]]
-then
-Ordinate=26
-Abscissa=46
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-225_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55H_"* ]]
-then
-Ordinate=23
-Abscissa=47
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-226_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55I_"* ]]
-then
-Ordinate=24
-Abscissa=47
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-227_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55J_"* ]]
-then
-Ordinate=25
-Abscissa=47
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-228_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56F_"* ]]
-then
-Ordinate=26
-Abscissa=47
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-229_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56G_"* ]]
-then
-Ordinate=27
-Abscissa=47
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-230_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56H_"* ]]
-then
-Ordinate=28
-Abscissa=47
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-244_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55M_"* ]]
-then
-Ordinate=23
-Abscissa=48
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-245_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55N_"* ]]
-then
-Ordinate=24
-Abscissa=48
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-246_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55O_"* ]]
-then
-Ordinate=25
-Abscissa=48
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-247_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56K_"* ]]
-then
-Ordinate=26
-Abscissa=48
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-248_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56L_"* ]]
-then
-Ordinate=27
-Abscissa=48
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-249_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56M_"* ]]
-then
-Ordinate=28
-Abscissa=48
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-261_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55P_"* ]]
-then
-Ordinate=21
-Abscissa=49
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-262_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55Q_"* ]]
-then
-Ordinate=22
-Abscissa=49
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-263_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55R_"* ]]
-then
-Ordinate=23
-Abscissa=49
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-264_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55S_"* ]]
-then
-Ordinate=24
-Abscissa=49
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-265_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55T_"* ]]
-then
-Ordinate=25
-Abscissa=49
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-266_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56P_"* ]]
-then
-Ordinate=26
-Abscissa=49
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-267_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56Q_"* ]]
-then
-Ordinate=27
-Abscissa=49
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-268_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56R_"* ]]
-then
-Ordinate=28
-Abscissa=49
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-269_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56S_"* ]]
-then
-Ordinate=29
-Abscissa=49
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-272_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/57Q_"* ]]
-then
-Ordinate=32
-Abscissa=49
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-276_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/54Y_"* ]]
-then
-Ordinate=20
-Abscissa=50
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-277_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55U_"* ]]
-then
-Ordinate=21
-Abscissa=50
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-278_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55V_"* ]]
-then
-Ordinate=22
-Abscissa=50
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-279_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55W_"* ]]
-then
-Ordinate=23
-Abscissa=50
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-280_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55X_"* ]]
-then
-Ordinate=24
-Abscissa=50
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-281_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55Y_"* ]]
-then
-Ordinate=25
-Abscissa=50
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-282_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56U_"* ]]
-then
-Ordinate=26
-Abscissa=50
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-283_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56V_"* ]]
-then
-Ordinate=27
-Abscissa=50
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-284_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56W_"* ]]
-then
-Ordinate=28
-Abscissa=50
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-285_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56X_"* ]]
-then
-Ordinate=29
-Abscissa=50
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-288_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/57V_"* ]]
-then
-Ordinate=32
-Abscissa=50
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-291_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/62E_"* ]]
-then
-Ordinate=20
-Abscissa=51
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-292_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63A_"* ]]
-then
-Ordinate=21
-Abscissa=51
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-243_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55L_"* ]]
-then
-Ordinate=22
-Abscissa=48
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-293_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63B_"* ]]
-then
-Ordinate=22
-Abscissa=51
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-294_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63C_"* ]]
-then
-Ordinate=23
-Abscissa=51
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-295_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63D_"* ]]
-then
-Ordinate=24
-Abscissa=51
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-296_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63E_"* ]]
-then
-Ordinate=25
-Abscissa=51
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-297_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64A_"* ]]
-then
-Ordinate=26
-Abscissa=51
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-298_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64B_"* ]]
-then
-Ordinate=27
-Abscissa=51
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-299_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64C_"* ]]
-then
-Ordinate=28
-Abscissa=51
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-300_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64D_"* ]]
-then
-Ordinate=29
-Abscissa=51
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-301_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64E_"* ]]
-then
-Ordinate=30
-Abscissa=51
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-304-bis_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/66A_"* ]]
-then
-Ordinate=36
-Abscissa=51
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-305_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63F_"* ]]
-then
-Ordinate=21
-Abscissa=52
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-306"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63G_"* ]]
-then
-Ordinate=22
-Abscissa=52
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-307_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63H_"* ]]
-then
-Ordinate=23
-Abscissa=52
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-308_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63I_"* ]]
-then
-Ordinate=24
-Abscissa=52
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-309_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63J_"* ]]
-then
-Ordinate=25
-Abscissa=52
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-310_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64F_"* ]]
-then
-Ordinate=26
-Abscissa=52
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-311_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64G_"* ]]
-then
-Ordinate=27
-Abscissa=52
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-312_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64H_"* ]]
-then
-Ordinate=28
-Abscissa=52
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-313_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64I_"* ]]
-then
-Ordinate=29
-Abscissa=52
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-314_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64J_"* ]]
-then
-Ordinate=30
-Abscissa=52
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-314-bis_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/66F_"* ]]
-then
-Ordinate=36
-Abscissa=52
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-315_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63L_"* ]]
-then
-Ordinate=22
-Abscissa=53
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-316_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63M_"* ]]
-then
-Ordinate=23
-Abscissa=53
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-317_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63N_"* ]]
-then
-Ordinate=24
-Abscissa=53
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-318_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63O_"* ]]
-then
-Ordinate=25
-Abscissa=53
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-319_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64K_"* ]]
-then
-Ordinate=26
-Abscissa=53
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-320_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64L_"* ]]
-then
-Ordinate=27
-Abscissa=53
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-321_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64M_"* ]]
-then
-Ordinate=28
-Abscissa=53
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-322_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64N_"* ]]
-then
-Ordinate=29
-Abscissa=53
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-323_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64O_"* ]]
-then
-Ordinate=30
-Abscissa=53
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-324_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63S_"* ]]
-then
-Ordinate=24
-Abscissa=54
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-325_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63T_"* ]]
-then
-Ordinate=25
-Abscissa=54
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-326_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64P_"* ]]
-then
-Ordinate=26
-Abscissa=54
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-327_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64Q_"* ]]
-then
-Ordinate=27
-Abscissa=54
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-328_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64R_"* ]]
-then
-Ordinate=28
-Abscissa=54
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-329_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64S_"* ]]
-then
-Ordinate=29
-Abscissa=54
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-330_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64T_"* ]]
-then
-Ordinate=30
-Abscissa=54
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-331_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/63Y_"* ]]
-then
-Ordinate=25
-Abscissa=55
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-332_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64U_"* ]]
-then
-Ordinate=26
-Abscissa=55
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-334_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64W_"* ]]
-then
-Ordinate=28
-Abscissa=55
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-335_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/64X_"* ]]
-then
-Ordinate=29
-Abscissa=55
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
-
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/65I_"* ]]
-then
-Ordinate=34
-Abscissa=52
-echo "${white}---> Ordinate substitut : ${green}$Ordinate"
-echo "${white}---> Abscissa substitut : ${green}$Abscissa"
 
 source tmp/tmp_bash
-else
-
-
-
-
-Echo "${white}---> Default information was not found yet"
-echo "$red Until now, $TiffSource was NOT FOUND !!!!"
-#End Rules AbsOrd
-# END Abscissa FIX
-IDCFirst2Nbr=$(echo "$NameNoExt" |awk '{print substr($0,0,2)}')
-IDCThirdLetter=$(echo "$NameNoExt" | head -c 3 | tail -c 1 )
-if [[ "$TiffSource" == *"Feuille-"* ]]
-then
-echo "${green}---> Feuille detected !"
-#echo "${lightblue}Abscissa $Abscissa Ordinate $Ordinate"
-#wk -F'|' -v "le_nom_complet"="$Title_Name" '$3=='le_nom_complet'' Cleaned_db/title.basics_movie.csv | awk -F'|' -v "year"="$Year" '$6=='year'' > ../.Temp.film
-echo $purple $Cleaned_Name
-awk -F'|' -v "Cleaned_Name"="$Cleaned_Name" '$1=='Cleaned_Name'' Abs-Ord.txt
-Ordinate_Basic=$(awk -F'|' -v "Cleaned_Name"="$Cleaned_Name" '$1=='Cleaned_Name'' Abs-Ord.txt|awk -F'|' '{print $2}')
-Abscissa_Basic=$(awk -F'|' -v "Cleaned_Name"="$Cleaned_Name" '$1=='Cleaned_Name'' Abs-Ord.txt|awk -F'|' '{print $3}')
-echo Ordinate_Basic $Ordinate_Basic Abscissa_Basic $Abscissa_Basic
-
-Ordinate="$Ordinate_Basic"
-Abscissa="$Abscissa_Basic"
-echo Ordinate=\"$Ordinate_Basic\" >> tmp/tmp_bash
-echo Ordinate=\"$Ordinate_Basic\" >> tmp/tmp_bash
-source tmp/tmp_bash
-echo $lightblue$Ordinate $Abscissa
-
-
-elif [[ $IDCThirdLetter =~ [A-Z] ]]
-then
-echo "${white}---> Third letter detected ###############################"
-#echo "${green}Abscissa $Abscissa Ordinate $Ordinate"
-
-else
-echo "${white}---> Regular Adscissa Ordinate detected"
-
-Ordinate=$(echo $NameNoExt | awk -F'-' '{print $1}'| tr -d ' ' | sed 's/..\///g')
-Abscissa=$(echo $NameNoExt | awk -F'-' '{print $2}' | tr -d ' '  | awk -F'_' '{print $1}'| sed 's/..\///g')
-IGCPatternOrdinate=$(echo $NameNoExt | awk -F'-' '{print $1}' )
-IGCPatternAbscissa=$(echo $NameNoExt | awk -F'-' '{print $2}' )
-
-fi
-#
-#echo $purple IGCPatternOrdinate $IGCPatternOrdinate
-#echo $purple Ordinate $Ordinate
-#echo $purple Abscissa $Abscissa
-#echo $purple IGCPatternAbscissa $IGCPatternAbscissa
-echo $Cleaned_Name
-source tmp/tmp_bash
-
-
-# END Abscissa
-fi
-echo Ordinate=\"$Ordinate\" >> tmp/tmp_bash
-echo Abscissa=\"$Abscissa\" >> tmp/tmp_bash
 
 
 
@@ -1957,11 +291,10 @@ DPI=$(echo "$XResolution"x"$YResolution" pixels/pouce)
 echo XResolution=\"$XResolution\" >> tmp/tmp_bash
 echo YResolution=\"$YResolution\" >> tmp/tmp_bash
 echo DPI=\"$DPI\" >> tmp/tmp_bash
-echo "$purple DEBUG 5000"
 
 #Début
 #Cas Particuliers
-if [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/3-4-41_"* ]]
+if [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/3-4-41_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/03-04-41_"* ]]
 then
 echo "${orange}---> Cas Particuliers - Transformation fixe $TiffSource ${reset}"
 gdal_translate -co COMPRESS=NONE -co ALPHA=YES -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 586500 129824 -gcp 0 "$HeightImage" 586500 129424 -gcp "$WidthImage" 0 587100 129824 -gcp "$WidthImage" "$HeightImage" 587100 129424 "$TiffSource" temp.tif
@@ -1972,7 +305,19 @@ fi
 gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -dstalpha temp.tif "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif"
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/8-9-51-52_"* ]]
+# 41-54-union_
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/41-54-union_"* ]]
+then
+echo "$purple debug found !"
+gdal_translate -co COMPRESS=NONE -co ALPHA=YES -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 608900 124624 -gcp 0 "$HeightImage" 608900 124224 -gcp "$WidthImage" 0 609300 124624 -gcp "$WidthImage" "$HeightImage" 609300 124224 "$TiffSource" temp.tif
+if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
+then
+mv "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ../_TRASH_TEMP/"$FileDate"_"$NameNoExt"_"$Year".tif
+fi
+gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -dstalpha temp.tif "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif"
+gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
+
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/8-9-51-52_"* ]]
 then
 gdal_translate -co COMPRESS=NONE -co ALPHA=YES -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 589500 125624 -gcp 0 "$HeightImage" 589500 125224 -gcp "$WidthImage" 0 590100 125624 -gcp "$WidthImage" "$HeightImage" 590100 125224 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -1983,7 +328,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -dstalpha -s_srs "EPSG:27561" -t_srs "EPS
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../07-58-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/07-58-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/44S-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/07-58-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/44S-union_"* ]]
 then
 echo "${orange}---> Cas Particuliers - Transformation fixe $TiffSource ${reset}"
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 588500 123024 -gcp 0 "$HeightImage" 588500 122524 -gcp "$WidthImage" 0 589200 123024 -gcp "$WidthImage" "$HeightImage" 589200 122524 "$TiffSource" temp.tif
@@ -1995,7 +340,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" te
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../Feuille-161-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/33-43-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-161-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/33-43-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-161-union_"* ]]
 then
 echo "${orange}---> Cas Particuliers - Transformation fixe $TiffSource ${reset}"
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 604200 129024 -gcp 0 "$HeightImage" 604200 128524 -gcp "$WidthImage" 0 604900 129024 -gcp "$WidthImage" "$HeightImage" 604900 128524 "$TiffSource" temp.tif
@@ -2007,7 +352,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" te
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../Feuille-106-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-106-107-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-106-107-union_"* ]]
 then
 echo "${orange}---> Cas Particuliers - Transformation fixe $TiffSource ${reset}"
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 603100 130224 -gcp 0 "$HeightImage" 603100 129824 -gcp "$WidthImage" 0 603800 130224 -gcp "$WidthImage" "$HeightImage" 603800 129824 "$TiffSource" temp.tif
@@ -2019,7 +364,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" te
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../Feuille-106-107_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-106-107_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-106-107_"* ]]
 then
 echo "${orange}---> Cas Particuliers - Transformation fixe $TiffSource ${reset}"
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 603100 130224 -gcp 0 "$HeightImage" 603100 129824 -gcp "$WidthImage" 0 603700 130224 -gcp "$WidthImage" "$HeightImage" 603700 129824 "$TiffSource" temp.tif
@@ -2030,7 +375,7 @@ fi
 gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" temp.tif -dstalpha "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif"
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 # Planche ../08-44-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/08-44-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/44S-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/08-44-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/44S-union_"* ]]
 then
 echo "${orange}---> Cas Particuliers - Transformation fixe $TiffSource ${reset}"
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 589200 128624 -gcp 0 "$HeightImage" 589200 128124 -gcp "$WidthImage" 0 589800 128624 -gcp "$WidthImage" "$HeightImage" 589800 128124 "$TiffSource" temp.tif
@@ -2042,7 +387,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" te
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../12-30-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/12-30-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/12-30-union_"* ]]
 then
 echo "${orange}---> Cas Particuliers - Transformation fixe $TiffSource ${reset}"
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 591500 134224 -gcp 0 "$HeightImage" 591500 133824 -gcp "$WidthImage" 0 592200 134224 -gcp "$WidthImage" "$HeightImage" 592200 133824 "$TiffSource" temp.tif
@@ -2054,7 +399,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" te
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche 29-37
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/29-37_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-56_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/39I_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/29-37_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-56_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/39I_"* ]]
 then
 echo "${orange}---> Cas Particuliers - Transformation fixe $TiffSource ${reset}"
 gdal_translate -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 601800 131524 -gcp 0 "$HeightImage" 601800 131024 -gcp "$WidthImage" 0 602400 131524 -gcp "$WidthImage" "$HeightImage" 602400 131024 "$TiffSource" temp.tif
@@ -2066,7 +411,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857"  t
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche 29-38-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/29-38-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-71-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/39N-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/29-38-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-71-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/39N-union_"* ]]
 then
 echo "${orange}---> Cas Particuliers - Transformation fixe $TiffSource ${reset}"
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 601800 131024 -gcp 0 "$HeightImage" 601800 130524 -gcp "$WidthImage" 0 602400 131024 -gcp "$WidthImage" "$HeightImage" 602400 130524 "$TiffSource" temp.tif
@@ -2079,7 +424,7 @@ gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".
 
 
 # Planche 28-37_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/28-37_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-55_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/39H_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/28-37_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-55_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/39H_"* ]]
 then
 echo "${orange}---> Cas Particuliers - Transformation fixe $TiffSource ${reset}"
 gdal_translate -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 601200 131424 -gcp 0 "$HeightImage" 601200 130924 -gcp "$WidthImage" 0 601800 131424 -gcp "$WidthImage" "$HeightImage" 601800 130924 "$TiffSource" temp.tif
@@ -2091,7 +436,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857"  t
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche 28-56-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/28-56-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/73C-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/28-56-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/73C-union_"* ]]
 then
 echo "${orange}---> Cas Particuliers - Transformation fixe $TiffSource ${reset}"
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 601100 123824 -gcp 0 "$HeightImage" 601100 123424 -gcp "$WidthImage" 0 601800 123824 -gcp "$WidthImage" "$HeightImage" 601800 123424 "$TiffSource" temp.tif
@@ -2103,7 +448,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -dstalpha -s_srs "EPSG:27561" -t_srs "EPS
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../71P_* or ../15-16-59_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/71P_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/15-16-59_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71P_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/15-16-59_"* ]]
 then
 gdal_translate -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 593800 122624 -gcp 0 "$HeightImage" 593800 122224 -gcp "$WidthImage" 0 594400 122624 -gcp "$WidthImage" "$HeightImage" 594400 122224 "$TiffSource" temp.tif
 
@@ -2116,7 +461,7 @@ gdalwarp -co COMPRESS=NONE -dstalpha -s_srs "EPSG:27561" -t_srs "EPSG:3857" temp
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../17-60-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/71V-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/17-60-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71V-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/17-60-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 594600 122324 -gcp 0 "$HeightImage" 594600 121624 -gcp "$WidthImage" 0 595200 122324 -gcp "$WidthImage" "$HeightImage" 595200 121624 "$TiffSource" temp.tif
 
@@ -2128,7 +473,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../12-54-55_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/12-54-55_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/61Q-V_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/12-54-55_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/61Q-V_"* ]]
 then
 gdal_translate -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 591600 124424 -gcp 0 "$HeightImage" 591600 124024 -gcp "$WidthImage" 0 592200 124424 -gcp "$WidthImage" "$HeightImage" 592200 124024 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2140,7 +485,7 @@ gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".
 
 
 # Planche ../07-39-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/07-39-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/35Q-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/07-39-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/35Q-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 588600 130724 -gcp 0 "$HeightImage" 588600 130224 -gcp "$WidthImage" 0 589200 130724 -gcp "$WidthImage" "$HeightImage" 589200 130224 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2151,7 +496,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 ## Planche ../19-43-union_1957_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/19-43-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-147-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/46N-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-147-148-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/19-43-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-147-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/46N-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-147-148-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 595800 129024 -gcp 0 "$HeightImage" 595800 128624 -gcp "$WidthImage" 0 596500 129024 -gcp "$WidthImage" "$HeightImage" 596500 128624 "$TiffSource" temp.tif
 
@@ -2163,7 +508,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../Feuille-93_* 18-40-19
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-93_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/18-40-19_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/37W-X_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-93_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/18-40-19_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/37W-X_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 595500 130224 -gcp 0 "$HeightImage" 595500 129824 -gcp "$WidthImage" 0 596100 130224 -gcp "$WidthImage" "$HeightImage" 596100 129824 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2174,7 +519,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../10-35-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/10-35-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/26Y-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/10-35-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/26Y-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 590400 132324 -gcp 0 "$HeightImage" 590400 131824 -gcp "$WidthImage" 0 591000 132324 -gcp "$WidthImage" "$HeightImage" 591000 131824 "$TiffSource" temp.tif
 
@@ -2187,14 +532,14 @@ gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".
 
 
 # Planche ../20-51-union_* Feuille-291-union
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/20-51-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-291-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/20-51-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-291-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 596400 125824 -gcp 0 "$HeightImage" 596400 125324 -gcp "$WidthImage" 0 597000 125824 -gcp "$WidthImage" "$HeightImage" 597000 125324 "$TiffSource" temp.tif
 gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -dstalpha temp.tif "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif"
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../Feuille-276-277_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-276-277_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-276-277_"* ]]
 then
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
 then
@@ -2205,7 +550,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../20-71-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/20-71-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/95E-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/20-71-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/95E-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 596400 117924 -gcp 0 "$HeightImage" 596400 117424 -gcp "$WidthImage" 0 597000 117924 -gcp "$WidthImage" "$HeightImage" 597000 117424 "$TiffSource" temp.tif
 
@@ -2217,7 +562,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../21-41-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/21-41-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-113-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/47A-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/21-41-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-113-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/47A-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 597000 130024 -gcp 0 "$HeightImage" 597000 129424 -gcp "$WidthImage" 0 597600 130024 -gcp "$WidthImage" "$HeightImage" 597600 129424 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2228,7 +573,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../22-48-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/22-48-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/55L-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-243-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/22-48-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55L-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-243-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 597600 127124 -gcp 0 "$HeightImage" 597600 126624 -gcp "$WidthImage" 0 598200 127124 -gcp "$WidthImage" "$HeightImage" 598200 126624 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2239,7 +584,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../26-46-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/26-46-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-209-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/56A-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/26-46-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-209-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56A-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 600000 127924 -gcp 0 "$HeightImage" 600000 127424 -gcp "$WidthImage" 0 600600 127924 -gcp "$WidthImage" "$HeightImage" 600600 127424 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2250,7 +595,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../26-56-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/26-56-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/73A-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/26-56-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/73A-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 600000 123824 -gcp 0 "$HeightImage" 600000 123424 -gcp "$WidthImage" 0 600700 123824 -gcp "$WidthImage" "$HeightImage" 600700 123424 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2261,7 +606,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../26-57-union_
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/27-57-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/73G-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/27-57-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/73G-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 600600 123524 -gcp 0 "$HeightImage" 600600 123024 -gcp "$WidthImage" 0 601200 123524 -gcp "$WidthImage" "$HeightImage" 601200 123024 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2272,7 +617,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../22-63-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/22-63-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/81L-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/22-63-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/81L-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 597600 121024 -gcp 0 "$HeightImage" 597600 120624 -gcp "$WidthImage" 0 598400 121024 -gcp "$WidthImage" "$HeightImage" 598400 120624 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2283,7 +628,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../25-67-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/25-67-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/89J-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/25-67-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/89J-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 599300 119424 -gcp 0 "$HeightImage" 599300 119024 -gcp "$WidthImage" 0 600000 119424 -gcp "$WidthImage" "$HeightImage" 600000 119024 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2294,7 +639,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../28-12-13_
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/28-12-13_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/3H-M_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/28-12-13_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/3H-M_"* ]]
 then
 gdal_translate -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 601200 141224 -gcp 0 "$HeightImage" 601200 140824 -gcp "$WidthImage" 0 601800 141224 -gcp "$WidthImage" "$HeightImage" 601800 140824 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2305,7 +650,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../30-55-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/30-55-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/30-55-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 602400 124224 -gcp 0 "$HeightImage" 602400 123824 -gcp "$WidthImage" 0 603100 124224 -gcp "$WidthImage" "$HeightImage" 603100 123824 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2316,7 +661,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" te
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../32-33-41-union
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/32-33-41-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-124-125-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/49B-C-union"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/32-33-41-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-124-125-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/49B-C-union"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 603700 129924 -gcp 0 "$HeightImage" 603700 129424 -gcp "$WidthImage" 0 604400 129924 -gcp "$WidthImage" "$HeightImage" 604400 129424 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2327,7 +672,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../32-33-41_
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/32-33-41_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-124-125_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/49B-C_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/32-33-41_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-124-125_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/49B-C_"* ]]
 then
 gdal_translate -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 603700 129824 -gcp 0 "$HeightImage" 603700 129424 -gcp "$WidthImage" 0 604300 129824 -gcp "$WidthImage" "$HeightImage" 604300 129424 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2338,7 +683,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../32-37-union_*
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/32-37-union"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-59-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/40G-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/32-37-union"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-59-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40G-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 603600 131424 -gcp 0 "$HeightImage" 603600 130924 -gcp "$WidthImage" 0 604200 131424 -gcp "$WidthImage" "$HeightImage" 604200 130924 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2349,7 +694,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../33-34-51_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/33-34-51_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-304_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/33-34-51_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-304_"* ]]
 then
 gdal_translate -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 604300 125824 -gcp 0 "$HeightImage" 604300 125424 -gcp "$WidthImage" 0 604900 125824 -gcp "$WidthImage" "$HeightImage" 604900 125424 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2360,7 +705,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../33-37-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/33-37-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-60-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/40H-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/33-37-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-60-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40H-union_"* ]]
 then
 gdal_translate  -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 604200 131424 -gcp 0 "$HeightImage" 604200 130924 -gcp "$WidthImage" 0 604800 131424 -gcp "$WidthImage" "$HeightImage" 604800 130924 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2371,7 +716,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -dstalpha -s_srs "EPSG:27561" -t_srs "EPS
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../33_44-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/33-44-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-179-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/49R-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/33-44-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-179-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/49R-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 604100 128624 -gcp 0 "$HeightImage" 604100 128224 -gcp "$WidthImage" 0 604900 128624 -gcp "$WidthImage" "$HeightImage" 604900 128224 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2382,7 +727,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../33-48-49-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/33-48-49-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-273-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/57M-R-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/33-48-49-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-273-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/57M-R-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 604200 126824 -gcp 0 "$HeightImage" 604200 126224 -gcp "$WidthImage" 0 604800 126824 -gcp "$WidthImage" "$HeightImage" 604800 126224 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2393,7 +738,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../33-48-49_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/33-48-49_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-273_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/33-48-49_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-273_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 604200 126724 -gcp 0 "$HeightImage" 604200 126324 -gcp "$WidthImage" 0 604800 126724 -gcp "$WidthImage" "$HeightImage" 604800 126324 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2404,7 +749,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../33-48-49_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/33-48-49-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-254-273-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/33-48-49-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-254-273-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 604200 126824 -gcp 0 "$HeightImage" 604200 126224 -gcp "$WidthImage" 0 604800 126824 -gcp "$WidthImage" "$HeightImage" 604800 126224 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2415,7 +760,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../36-40-41_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/36-40-41_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/41U-50A_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/36-40-41_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/41U-50A_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 606000 130124 -gcp 0 "$HeightImage" 606000 129724 -gcp "$WidthImage" 0 606600 130124 -gcp "$WidthImage" "$HeightImage" 606600 129724 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2426,7 +771,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../36-42-43_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/36-42-43_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/50F-N_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/36-42-43_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/50F-N_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 606000 129324 -gcp 0 "$HeightImage" 606000 128924 -gcp "$WidthImage" 0 606600 129324 -gcp "$WidthImage" "$HeightImage" 606600 128924 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2437,7 +782,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../39-43-44_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/39-43-44_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/50N-S_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/39-43-44_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/50N-S_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 607800 128824 -gcp 0 "$HeightImage" 607800 128424 -gcp "$WidthImage" 0 608400 128824 -gcp "$WidthImage" "$HeightImage" 608400 128424 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2448,7 +793,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../39-44-45_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/39-44-45_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/50S-X_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/39-44-45_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/50S-X_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 607800 128424 -gcp 0 "$HeightImage" 607800 128024 -gcp "$WidthImage" 0 608400 128424 -gcp "$WidthImage" "$HeightImage" 608400 128024 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2467,7 +812,7 @@ gdaladdo -r average ../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".t
 
 # Planche ../41-45-42-union_*
 # La planche sans l'encart, mais avec l'alpha
-elif [[ "$TiffSource" == ../_Source_Standard_Croped_TIFF/41-45-42-union_* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/51U-V-union_"* ]]
+elif [[ "$TiffSource" == ../_Source_Standard_Croped_TIFF/41-45-42-union_* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/51U-V-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 609300 128224 -gcp 0 "$HeightImage" 609300 127824 -gcp "$WidthImage" 0 609900 128224 -gcp "$WidthImage" "$HeightImage" 609900 127824 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2478,7 +823,7 @@ gdalwarp -co COMPRESS=NONE -s_srs "EPSG:27561" -t_srs "EPSG:3857" -dstalpha temp
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../41-45-42_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/41-45-42_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/51U-V_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/41-45-42_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/51U-V_"* ]]
 then
 gdal_translate -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 609300 128224 -gcp 0 "$HeightImage" 609300 127824 -gcp "$WidthImage" 0 609900 128224 -gcp "$WidthImage" "$HeightImage" 609900 127824 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2489,7 +834,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" te
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../41-42-46_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/41-42-46_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/59A-B_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/41-42-46_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/59A-B_"* ]]
 then
 gdal_translate -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 609300 127824 -gcp 0 "$HeightImage" 609300 127424 -gcp "$WidthImage" 0 609900 127824 -gcp "$WidthImage" "$HeightImage" 609900 127424 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2523,7 +868,7 @@ gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".
 
 
 # Planche ../34-35-38_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/34-35-38_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-76_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/40N-O_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/34-35-38_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-76_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40N-O_"* ]]
 then
 gdal_translate -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 605100 131024 -gcp 0 "$HeightImage" 605100 130624 -gcp "$WidthImage" 0 605700 131024 -gcp "$WidthImage" "$HeightImage" 605700 130624 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2534,7 +879,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../34-41-42_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/34-41-42_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/49D-I_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-126-144_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/34-41-42_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/49D-I_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-126-144_"* ]]
 then
 gdal_translate -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 604800 129724 -gcp 0 "$HeightImage" 604800 129324 -gcp "$WidthImage" 0 605400 129724 -gcp "$WidthImage" "$HeightImage" 605400 129324 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2547,7 +892,6 @@ gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".
 # Planche ../34-48-49-union_*
 elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/34-48-49-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-255-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/57N-S-union_"* ]]
 then
-echo $purple hello there
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 604800 126924 -gcp 0 "$HeightImage" 604800 126524 -gcp "$WidthImage" 0 605500  126924 -gcp "$WidthImage" "$HeightImage" 605500 126524 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
 then
@@ -2557,7 +901,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../34-48-49_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/34-48-49_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-255_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/57N-S_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/34-48-49_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-255_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/57N-S_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 604800 126924 -gcp 0 "$HeightImage" 604800 126524 -gcp "$WidthImage" 0 605400  126924 -gcp "$WidthImage" "$HeightImage" 605400 126524 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2568,7 +912,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../34-49-50_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/34-49-50_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-274_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/57S-X_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/34-49-50_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-274_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/57S-X_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 604800 126524 -gcp 0 "$HeightImage" 604800 126124 -gcp "$WidthImage" 0 605400  126524 -gcp "$WidthImage" "$HeightImage" 605400 126124 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2579,7 +923,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../35-49-50-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/35-49-50-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/57T-Y3-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-275-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/35-49-50-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/57T-Y3-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-275-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 605400 126624 -gcp 0 "$HeightImage" 605400 126024 -gcp "$WidthImage" 0 606000  126624 -gcp "$WidthImage" "$HeightImage" 606000 126024 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2590,7 +934,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../35-49-50_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/35-49-50_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-275_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/35-49-50_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-275_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 605400 126524 -gcp 0 "$HeightImage" 605400 126124 -gcp "$WidthImage" 0 606000  126524 -gcp "$WidthImage" "$HeightImage" 606000 126124 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2601,7 +945,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../34-53-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/34-53-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/34-53-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 604700 125124 -gcp 0 "$HeightImage" 604700 124624 -gcp "$WidthImage" 0 605400  125124 -gcp "$WidthImage" "$HeightImage" 605400 124624 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2612,7 +956,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../36-34-union_
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/36-34-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/32P-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/36-34-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/32P-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 606000 132624 -gcp 0 "$HeightImage" 606000 132224 -gcp "$WidthImage" 0 606800 132624 -gcp "$WidthImage" "$HeightImage" 606800 132224 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2623,7 +967,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../36-41-42_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/36-41-42_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/50A-F_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/36-41-42_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/50A-F_"* ]]
 then
 gdal_translate -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 606000 129724 -gcp 0 "$HeightImage" 606000 129324 -gcp "$WidthImage" 0 606600 129724 -gcp "$WidthImage" "$HeightImage" 606600 129324 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2634,7 +978,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../37-58-59_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/37-58-59_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/75L-N_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/37-58-59_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/75L-N_"* ]]
 then
 gdal_translate -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 606600 122724 -gcp 0 "$HeightImage" 606600 122324 -gcp "$WidthImage" 0 607200  122724 -gcp "$WidthImage" "$HeightImage" 607200 122324 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2645,7 +989,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../38-39-58_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/38-39-58_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/75M-N_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/38-39-58_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/75M-N_"* ]]
 then
 gdal_translate -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 607500 123024 -gcp 0 "$HeightImage" 607500 122624 -gcp "$WidthImage" 0 608100  123024 -gcp "$WidthImage" "$HeightImage" 608100 122624 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2656,7 +1000,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../40-59-union*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/40-59-union"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/75T-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40-59-union"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/75T-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 608400 122724 -gcp 0 "$HeightImage" 608400 122224 -gcp "$WidthImage" 0 609000  122724 -gcp "$WidthImage" "$HeightImage" 609000 122224 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2667,7 +1011,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../42-43-39_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/42-43-39_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/42Q_R_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/42-43-39_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/42Q_R_"* ]]
 then
 gdal_translate -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 610100 130624 -gcp 0 "$HeightImage" 610100 130224 -gcp "$WidthImage" 0 610700  130624 -gcp "$WidthImage" "$HeightImage" 610700 130224 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2678,7 +1022,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../45-38-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/45-38-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/42O-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/45-38-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/42O-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 611400 131080 -gcp 0 "$HeightImage" 611400 130624 -gcp "$WidthImage" 0 612000  131080 -gcp "$WidthImage" "$HeightImage" 612000 130624 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2689,7 +1033,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../45-58-59_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/45-58-59_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/76O-T_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/45-58-59_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/76O-T_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 611400 122824 -gcp 0 "$HeightImage" 611400 122424 -gcp "$WidthImage" 0 612000  122824 -gcp "$WidthImage" "$HeightImage" 612000 122424 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2700,7 +1044,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../46-39-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/46-39-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/43P-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/46-39-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/43P-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 612000 130624 -gcp 0 "$HeightImage" 612000 130124 -gcp "$WidthImage" 0 612600  130624 -gcp "$WidthImage" "$HeightImage" 612600 130124 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2711,7 +1055,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../46-57*
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/46-57_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/77F_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/46-57_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/77F_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 612100 123424 -gcp 0 "$HeightImage" 612100 123024 -gcp "$WidthImage" 0 612700 123424 -gcp "$WidthImage" "$HeightImage" 612700 123024 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2722,7 +1066,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../46-58*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/46-58"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/77K_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/46-58"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/77K_"* ]]
 then
 gdal_translate -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -gcp 0 0 612100 123024 -gcp 0 "$HeightImage" 612100 122624 -gcp "$WidthImage" 0 612700  123024 -gcp "$WidthImage" "$HeightImage" 612700 122624 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2744,7 +1088,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -dstalpha -s_srs "EPSG:27561" -t_srs "EPS
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../48-38-39_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/48-38-39_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/43M-R_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/48-38-39_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/43M-R_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 613200 130824 -gcp 0 "$HeightImage" 613200 130424 -gcp "$WidthImage" 0 613800 130824 -gcp "$WidthImage" "$HeightImage" 613800 130424 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2755,7 +1099,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -dstalpha -s_srs "EPSG:27561" -t_srs "EPS
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../48-38-39-union*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/48-38-39-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/43M-R-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/48-38-39-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/43M-R-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 613100 130824 -gcp 0 "$HeightImage" 613100 130424 -gcp "$WidthImage" 0 613800 130824 -gcp "$WidthImage" "$HeightImage" 613800 130424 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2766,7 +1110,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -dstalpha -s_srs "EPSG:27561" -t_srs "EPS
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../56-24-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/56-24-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56-24-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 618000 136624 -gcp 0 "$HeightImage" 618000 136124 -gcp "$WidthImage" 0 618600 136624 -gcp "$WidthImage" "$HeightImage" 618600 136124 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2777,7 +1121,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -dstalpha -s_srs "EPSG:27561" -t_srs "EPS
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../20-42-union*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/20-42-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-130-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/46J-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/20-42-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-130-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/46J-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 596400 129424 -gcp 0 "$HeightImage" 596400 128924 -gcp "$WidthImage" 0 597000 129424 -gcp "$WidthImage" "$HeightImage" 597000 128924 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2788,7 +1132,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -dstalpha -s_srs "EPSG:27561" -t_srs "EPS
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../Feuille-300-301_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-300-301_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-300-301_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 601800 125824 -gcp 0 "$HeightImage" 601800 125424 -gcp "$WidthImage" 0 602500 125824 -gcp "$WidthImage" "$HeightImage" 602500 125424 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2798,12 +1142,9 @@ fi
 gdalwarp -co COMPRESS=NONE -r bilinear -dstalpha -s_srs "EPSG:27561" -t_srs "EPSG:3857" temp.tif "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif"
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
-#
-# OBSERVATOIRE + Alpha Escalier de l'observoire + Cubes etc = + 100 mètres  25-49    29-49   25-50   26-50
-#
 
 # Planche ../25-49-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/25-49-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-265-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/55T-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/25-49-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-265-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55T-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 599400 126624 -gcp 0 "$HeightImage" 599400 126124 -gcp "$WidthImage" 0 600100  126624 -gcp "$WidthImage" "$HeightImage" 600100 126124 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2814,7 +1155,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -dstalpha -s_srs "EPSG:27561" -t_srs "EPS
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../26-49-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/26-49-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-266-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/56P-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/26-49-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-266-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/56P-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 599900 126624 -gcp 0 "$HeightImage" 599900 126124 -gcp "$WidthImage" 0 600600  126624 -gcp "$WidthImage" "$HeightImage" 600600 126124 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2825,7 +1166,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../25-50-Special-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/25-50-Special-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-281-Special-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/55Y-Special-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/25-50-Special-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-281-Special-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55Y-Special-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 599400 126324 -gcp 0 "$HeightImage" 599400 125724 -gcp "$WidthImage" 0 600100  126324 -gcp "$WidthImage" "$HeightImage" 600100 125724 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2836,7 +1177,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../25-50-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/25-50-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/55Y-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/25-50-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55Y-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 599400 126324 -gcp 0 "$HeightImage" 599400 125824 -gcp "$WidthImage" 0 600100  126324 -gcp "$WidthImage" "$HeightImage" 600100 125824 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2860,7 +1201,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../25-50-B-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-281-B-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-281-B-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 599400 126324 -gcp 0 "$HeightImage" 599400 125824 -gcp "$WidthImage" 0 600100  126324 -gcp "$WidthImage" "$HeightImage" 600100 125824 "$TiffSource" temp.tif
 if [ -f ../_Output_3857/Feuille-281-B-union_"$geoserverworkspace"_1896.tif ]
@@ -2871,7 +1212,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average ../_Output_3857/Feuille-281-B-union_"$geoserverworkspace"_1896.tif 2 4 8 16
 
 # Planche ../26-50-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/26-50-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/Feuille-282-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/55U-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/26-50-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-282-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/55U-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 599900 126324 -gcp 0 "$HeightImage" 599900 125824 -gcp "$WidthImage" 0 600600  126324 -gcp "$WidthImage" "$HeightImage" 600600 125824 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2882,7 +1223,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear  -dstalpha -s_srs "EPSG:27561" -t_srs "EP
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../40-35-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/40-35-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/32Y-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40-35-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/32Y-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 608400 132224 -gcp 0 "$HeightImage" 608400 131824 -gcp "$WidthImage" 0 609100  132224 -gcp "$WidthImage" "$HeightImage" 609100 131824 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2894,7 +1235,7 @@ gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".
 
 
 # Planche ../40-36-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/40-36-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/41E-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40-36-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/41E-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 608400 131824 -gcp 0 "$HeightImage" 608400 131324 -gcp "$WidthImage" 0 609000  131824 -gcp "$WidthImage" "$HeightImage" 609000 131324 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2905,7 +1246,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear  -dstalpha -s_srs "EPSG:27561" -t_srs "EP
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../40-43-union_*
-elif [[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/40-43-union_"* ]]||[[ "$TiffSource" =~ "../_Source_Standard_Croped_TIFF/50O-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/40-43-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/50O-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 608400 129124 -gcp 0 "$HeightImage" 608400 128624 -gcp "$WidthImage" 0 609000  129124 -gcp "$WidthImage" "$HeightImage" 609000 128624 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2949,7 +1290,11 @@ echo "${white}---> \$OrdinateMultiple   -   -   -   -   -   -   -   -   -   -   
 if echo "$IGCPatternOrdinate" | grep '[0-9]"_"' &&  echo "$IGCPatternAbscissa" | grep '[0-9]"_"'
 then
 echo "${white}---> Nouveaux numéros - Post --> 1968 ${orange}("$Year") ${green}"$IGCPatternOrdinate"-"$IGCPatternAbscissa"${white}"
-
+echo "$red MINUTES Line 1328"
+echo "$red MINUTES Line 1338"
+echo "$red MINUTES Line 1338"
+echo "$red MINUTES Line 1338"
+echo "gdal_translate -co COMPRESS=NONE -co ALPHA=YES -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 "$Ouest" "$Nord" -gcp 0 "$HeightImage" "$Ouest" "$Sud" -gcp "$WidthImage" 0 "$Est" "$Nord" -gcp "$WidthImage" "$HeightImage" "$Est" "$Sud" "$TiffSource" temp.tif"
 # Si Minute then alpha
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
 then
@@ -2959,7 +1304,7 @@ gdal_translate -co COMPRESS=NONE -co ALPHA=YES -a_srs EPSG:27561 -of GTiff -r bi
 
 gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -dstalpha temp.tif "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif"
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
-
+echo "$red MINUTES Line 1338"
 else
 #
 # Condition: if the filename corresponds to the pattern: 25X_
@@ -2971,8 +1316,10 @@ else
 #
 # Sous condition numéros 26K, 72Y,
 #
-if [[ $IDCThirdLetter =~ [A-B] ]]
+if [[ $IDCThirdLetter == [A-B] ]]
 then
+
+echo "$red THIRD LETTER Line 1353"
 echo "${white}---> Numérotation du département de la Seine pre 1962 - ("${orange}""$Year")${green}      $NameNoExt $purple"
 gdal_translate -co COMPRESS=NONE -co ALPHA=YES -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 "$Ouest" "$Nord" -gcp 0 "$HeightImage" "$Ouest" "$Sud" -gcp "$WidthImage" 0 "$Est" "$Nord" -gcp "$WidthImage" "$HeightImage" "$Est" "$Sud" "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
@@ -2996,7 +1343,7 @@ mv "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ../_TRASH_TE
 fi
 
 # Si Minute, then alpha
-if [[ "$TiffSource" =~ "*_minute*" ]]
+if [[ "$TiffSource" == "*_minute*" ]]
 then
 echo "---> Pocessing : Plan Minute"
 gdal_translate -co COMPRESS=NONE -co ALPHA=YES -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 "$Ouest" "$Nord" -gcp 0 "$HeightImage" "$Ouest" "$Sud" -gcp "$WidthImage" 0 "$Est" "$Nord" -gcp "$WidthImage" "$HeightImage" "$Est" "$Sud" "$TiffSource" temp.tif
@@ -3077,12 +1424,12 @@ echo Char3=\"$Char3\" >> tmp/tmp_bash
 
 
 echo "${white}---> Go to ${orange}SubRoutine_forNode.sh${orange}"
-
-echo "$purple DEBUG 5500"
+echo "${white}---> Go to ${orange}SubRoutine_forNode.sh${orange}"
 
 ./SubRoutine_forNode.sh
-echo "$purple DEBUG 5600"
-echo "${white}---> Back from ${orange}CsvNWfs.sh${orange}"
+echo "${white}---> Back from ${orange}SubRoutine_forNode.sh${orange}"
+echo "${white}---> source ${orange}tmp/tmp_bash tmp/variable_invariable"
+
 source tmp/tmp_bash tmp/variable_invariable
 
 
@@ -3132,11 +1479,17 @@ then
 Author=$(cat ../Author.txt)
 echo "${white}---> \$Author${white}                                                                 ${orange}: $Author"
 fi
-
+if [ -f ../LinkSource.txt ]
+then
+LinkSource=$(cat ../LinkSource.txt)
+echo "${white}---> \$LinkSource${white}                                                                 ${orange}: $LinkSource"
+LienSource="$LinkSource" >> tmp_bash
+LienSource="$LinkSource"
+fi
 
 echo "$white Variables"
 echo "$OutputFilenameSeul|$NodeID|$NomMachine|$NomMachineLowCap|$LayerHumanTitle|$LayerHumanShortName|$MapType|$WorkspaceName|$WorkspaceNameLowCap|$Year|$body|$TiffPrivatePath|$TiffCloudpath|$ZipCloudpath|$PNGCloudpath|$TiffHTTP|$ZipHTTP|$PNGHTTP|$layer_attribut|$targetid|$idsource|$LayerBound|$WKT_Map_Extent|$Row_layer_order|$Nord|$Sud|$Est|$Ouest|$NordOuest3857|$SudOuest3857|$SudEst3857|$NordEst3857|$NordOuest4326|$SudOuest4326|$SudEst4326|$NordEst4326|$NordBasic|$SudBasic|$EstBasic|$OuestBasic|$BasicNordOuest|$BasicSudOuest|$BasicSudEst|$BasicNordEst|$BasicNordOuest3857|$BasicSudOuest3857|$BasicSudEst3857|$BasicNordEst3857|$BasicNordOuest4326|$BasicSudOuest4326|$BasicSudEst4326|$BasicNordEst4326|$Default_IDC_GEOMETRY|$OriginalPost1980Name|$OldNum|$Seine|$Author|$Comentaire|$LienSource|$LieuxDitTID|"
-echo "$red Done !"
+echo "$green--->  Done ! $white"
 
 
 #THIS_IS_A_LINEBREAK
@@ -3144,7 +1497,7 @@ echo "$OutputFilenameSeul|$NodeID|$NomMachine|$NomMachineLowCap|$LayerHumanTitle
 
 
 
-exiftool -r -overwrite_original -keywords= -m -keywords="OutputFilenameSeul|NodeID|NomMachine|NomMachineLowCap|LayerHumanTitle|LayerHumanShortName|MapType|WorkspaceName|WorkspaceNameLowCap|Year|body|TiffPrivatePath|TiffCloudpath|ZipCloudpath|PNGCloudpath|TiffHTTP|ZipHTTP|PNGHTTP|layer_attribut|targetid|idsource|LayerBound|WKT_Map_Extent|Row_layer_order|Nord|Sud|Est|Ouest|NordOuest3857|SudOuest3857|SudEst3857|NordEst3857|NordOuest4326|SudOuest4326|SudEst4326|NordEst4326|NordBasic|SudBasic|EstBasic|OuestBasic|BasicNordOuest|BasicSudOuest|BasicSudEst|BasicNordEst|BasicNordOuest3857|BasicSudOuest3857|BasicSudEst3857|BasicNordEst3857|BasicNordOuest4326|BasicSudOuest4326|BasicSudEst4326|BasicNordEst4326|Default_IDC_GEOMETRY|OriginalPost1980Name|OldNum|Seine|Author|Comentaire|LienSource|LieuxDitTID|THIS_IS_A_LINEBREAK
+exiftool -r -overwrite_original -description= -m -description="OutputFilenameSeul|NodeID|NomMachine|NomMachineLowCap|LayerHumanTitle|LayerHumanShortName|MapType|WorkspaceName|WorkspaceNameLowCap|Year|body|TiffPrivatePath|TiffCloudpath|ZipCloudpath|PNGCloudpath|TiffHTTP|ZipHTTP|PNGHTTP|layer_attribut|targetid|idsource|LayerBound|WKT_Map_Extent|Row_layer_order|Nord|Sud|Est|Ouest|NordOuest3857|SudOuest3857|SudEst3857|NordEst3857|NordOuest4326|SudOuest4326|SudEst4326|NordEst4326|NordBasic|SudBasic|EstBasic|OuestBasic|BasicNordOuest|BasicSudOuest|BasicSudEst|BasicNordEst|BasicNordOuest3857|BasicSudOuest3857|BasicSudEst3857|BasicNordEst3857|BasicNordOuest4326|BasicSudOuest4326|BasicSudEst4326|BasicNordEst4326|Default_IDC_GEOMETRY|OriginalPost1980Name|OldNum|Seine|Author|Comentaire|LienSource|LieuxDitTID|THIS_IS_A_LINEBREAK
 $OutputFilenameSeul|$NodeID|$NomMachine|$NomMachineLowCap|$LayerHumanTitle|$LayerHumanShortName|$MapType|$WorkspaceName|$WorkspaceNameLowCap|$Year|$body|$TiffPrivatePath|$TiffCloudpath|$ZipCloudpath|$PNGCloudpath|$TiffHTTP|$ZipHTTP|$PNGHTTP|$layer_attribut|$targetid|$idsource|$LayerBound|$WKT_Map_Extent|$Row_layer_order|$Nord|$Sud|$Est|$Ouest|$NordOuest3857|$SudOuest3857|$SudEst3857|$NordEst3857|$NordOuest4326|$SudOuest4326|$SudEst4326|$NordEst4326|$NordBasic|$SudBasic|$EstBasic|$OuestBasic|$BasicNordOuest|$BasicSudOuest|$BasicSudEst|$BasicNordEst|$BasicNordOuest3857|$BasicSudOuest3857|$BasicSudEst3857|$BasicNordEst3857|$BasicNordOuest4326|$BasicSudOuest4326|$BasicSudEst4326|$BasicNordEst4326|$Default_IDC_GEOMETRY|$OriginalPost1980Name|$OldNum|$Seine|$Author|$Comentaire|$LienSource|$LieuxDitTID|"  -artist="sous-paris.com" -Software="Kta2geo 1.3" ../_Output_3857/"$Lastrender"
 if [ -f ../_Output_3857/"$Lastrender"_original ]
 then
@@ -3167,7 +1520,7 @@ cat tmp/Layerstmp |awk NF >> ../_Output_CSVs/_Layer_Text_Export.csv
 echo "${white}---> Now fetching the files on the server where apache user can read"
 
 
-echo "${white}'
+echo "${white}
                      ########:::'######::'##:::'##:'##::: ##::'######::
                      ##.... ##:'##... ##:. ##:'##:: ###:: ##:'##... ##:
                      ##:::: ##: ##:::..:::. ####::: ####: ##: ##:::..::
