@@ -116,7 +116,7 @@ rm temp.tif
 
 echo "${white}---> Syncing the CSVs folder                  :${orange}_Output_CSVs in "$Server_SCP" path ${white}"$StorageLocation""
 rsync -vrapth --update --progress -e "ssh -p $Port_SCP" ../_Output_CSVs/ "$User_scp"@"$Server_SCP":"$StorageLocation"_Output_CSVs
-
+echo "rsync -vrapth --update --progress -e "ssh -p $Port_SCP" ../_Source_Standard_Croped_TIFF/ "$User_scp"@"$Server_SCP":"$StorageLocation"_Source_Standard_Croped_TIFF"
 echo "${white}---> Syncing the GeoTiff folder               :${orange}_Source_Standard_Croped_TIFF in "$Server_SCP" path ${white}"$StorageLocation""
 rsync -vrapth --update --progress -e "ssh -p $Port_SCP" ../_Source_Standard_Croped_TIFF/ "$User_scp"@"$Server_SCP":"$StorageLocation"_Source_Standard_Croped_TIFF
 
