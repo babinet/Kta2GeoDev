@@ -108,14 +108,15 @@ Abscissa=38
 echo "${white}---> Ordinate substitut : ${green}$Ordinate"
 echo "${white}---> Abscissa substitut : ${green}$Abscissa"
 
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/15-16-59"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/71P"* ]]
+then
+echo $purple Found
+Ordinate=15.66666666666666666664
+Abscissa=59
+echo "${white}---> Ordinate substitut : ${green}$Ordinate"
+echo "${white}---> Abscissa substitut : ${green}$Abscissa"
+
 fi
-
-
-#Planche 18-40-19
-#Planche 37W-X
-#Planche 34-35-38
-#Planche 40M-O
-
 
 
 
