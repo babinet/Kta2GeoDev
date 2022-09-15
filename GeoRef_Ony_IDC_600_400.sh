@@ -230,10 +230,11 @@ echo PNGCloudpath=\"$PNGCloudpath\" >> tmp/tmp_bash
 PNGHTTP=$(echo /system/files/Raw_map_EPSG_3857/PNG/"$OutputFileNoExt".png)
 echo "${white}---> \$PNGHTTP                                                        ${orange}: $PNGHTTP"
 echo "${white}###########################################################################################################################################################
+---> $(date)
 ---> Processing \$TiffSource                                          ${orange}: $TiffSource
 ${white}###########################################################################################################################################################"
 echo PNGHTTP=\"$PNGHTTP\" >> tmp/tmp_bash
-Cleaned_Name=$(echo "$NameNoExt"|sed 's/-Special-union//g' |sed 's/-B-union//g' |sed 's/-union_//g'| sed 's/-union_//g')
+Cleaned_Name=$(echo "$NameNoExt"|sed 's/-Special-union//g' |sed 's/-B-union//g' |sed 's/-union_//g'| sed 's/-union_//g'|sed 's/-union//g' )
 
 echo Cleaned_Name=\"$Cleaned_Name\" >> tmp/tmp_bash
 ./AbsOrd.sh
@@ -242,8 +243,9 @@ echo Cleaned_Name=\"$Cleaned_Name\" >> tmp/tmp_bash
 source tmp/tmp_bash
 
 
+./Off_Grid_Planche.sh
 
-
+source tmp/tmp_bash
 
 
 
@@ -351,6 +353,18 @@ fi
 gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" temp.tif -dstalpha "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif"
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-161-162_"* ]]
+then
+echo "${orange}---> Cas Particuliers - Transformation fixe $TiffSource ${reset}"
+gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 604200 129024 -gcp 0 "$HeightImage" 604200 128624 -gcp "$WidthImage" 0 604900 129024 -gcp "$WidthImage" "$HeightImage" 604900 128624 "$TiffSource" temp.tif
+if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
+then
+mv "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ../_TRASH_TEMP/"$FileDate"_"$NameNoExt"_"$Year".tif
+fi
+gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" temp.tif -dstalpha "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif"
+gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
+
+
 # Planche ../Feuille-106-union_*
 elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-106-107-union_"* ]]
 then
@@ -367,13 +381,14 @@ gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".
 elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-106-107_"* ]]
 then
 echo "${orange}---> Cas Particuliers - Transformation fixe $TiffSource ${reset}"
-gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 603100 130224 -gcp 0 "$HeightImage" 603100 129824 -gcp "$WidthImage" 0 603700 130224 -gcp "$WidthImage" "$HeightImage" 603700 129824 "$TiffSource" temp.tif
+gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 603100 130224 -gcp 0 "$HeightImage" 603100 129824 -gcp "$WidthImage" 0 603900 130224 -gcp "$WidthImage" "$HeightImage" 603900 129824 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]
 then
 mv "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ../_TRASH_TEMP/"$FileDate"_"$NameNoExt"_"$Year".tif
 fi
 gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" temp.tif -dstalpha "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif"
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
+
 # Planche ../08-44-union_*
 elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/08-44-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/44S-union_"* ]]
 then
@@ -562,7 +577,7 @@ gdalwarp -co COMPRESS=NONE -r bilinear -s_srs "EPSG:27561" -t_srs "EPSG:3857" -d
 gdaladdo -r average "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" 2 4 8 16
 
 # Planche ../21-41-union_*
-elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/21-41-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-113-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/47A-union_"* ]]
+elif [[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/21-41-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-113-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/47A-union_"* ]]||[[ "$TiffSource" == "../_Source_Standard_Croped_TIFF/Feuille-96-113-union_"* ]]
 then
 gdal_translate -co ALPHA=YES -co COMPRESS=NONE -a_srs EPSG:27561 -of GTiff -r bilinear -gcp 0 0 597000 130024 -gcp 0 "$HeightImage" 597000 129424 -gcp "$WidthImage" 0 597600 130024 -gcp "$WidthImage" "$HeightImage" 597600 129424 "$TiffSource" temp.tif
 if [ -f "../_Output_3857/"$NameNoExt"_"$geoserverworkspace"_"$Year".tif" ]

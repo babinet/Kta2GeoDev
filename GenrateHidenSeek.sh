@@ -40,7 +40,7 @@ echo "${white}---> Etx                      ${orange}: $Etx"
 echo "${white}---> OutputFilenameSeul       ${orange}: $OutputFilenameSeul"
 echo "${white}---> WorkspaceName            ${orange}: $WorkspaceName"
 
-echo "var bound_"$NomMachineLowCap"_bound = new OpenLayers.Bounds($LayerBound); if (mapbounds.intersectsBounds(bound_"$NomMachineLowCap"_bound))    { \$('#plan_planche$NomMachine').show(); \$('#add_planche_$NomMachine').show();  } else {  \$('#plan_planche_$NomMachine').hide(); \$('#add_planche_$NomMachine').hide();}" >>tmp/tmp_HideNSeek
+echo "var bound_"$NomMachineLowCap"_bound = new OpenLayers.Bounds($LayerBound); if (mapbounds.intersectsBounds(bound_"$NomMachineLowCap"_bound))    { \$('#add_planche_$NomMachine').show();  } else {  \$('#add_planche_$NomMachine').hide();}" >>tmp/tmp_HideNSeek
 
 source tmp/tmp_bash
 

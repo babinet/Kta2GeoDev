@@ -207,7 +207,6 @@ echo Seine=\"$Seine\" >> tmp/tmp_bash
 
 body=$(cat tmp/exiftool|awk -F'|' 'NR==1 {for (i=1; i<=NF; i++) {f[$i] = i}}; { print $(f["body"]) }' OFS='|' |sed 's/THIS_IS_AN_EMPTY_CELL//g'|awk 'NR == 2')
 echo "${white}---> \$body                                                           ${orange}: $body"
-echo body=\"$body\" >> tmp/tmp_bash
 
 
 Default_IDC_GEOMETRY=$(cat tmp/exiftool|awk -F'|' 'NR==1 {for (i=1; i<=NF; i++) {f[$i] = i}}; { print $(f["Default_IDC_GEOMETRY"]) }' OFS='|' |sed 's/THIS_IS_AN_EMPTY_CELL//g'|awk 'NR == 2')
@@ -276,9 +275,8 @@ echo "${white}---> \$BasicNordEst4326                                           
 echo BasicNordEst4326=\"$BasicNordEst4326\" >> tmp/tmp_bash
 
 
-echo "$purple CloudPNGSource $CloudPNGSource CloudZIPSource $CloudZIPSource $CloudTIFSource $CloudTIFSource"
-touch tmp/_NodesMap/WFS_Node_$NodeID
-printf "$Year|$NodeID|$OriginalPost1980Name|$OldNum|$Seine|$NomMachine|$NomMachineLowCap|$OutputFilenameSeul|$LayerHumanTitle|$WorkspaceName|$WorkspaceNameLowCap|$body|$WKT_Map_Extent|$idsource|$targetid|$layer_attribut|$Default_IDC_GEOMETRY|$PNGHTTP|$ZipHTTP$TiffHTTP|$ZipCloudpath|$TiffPrivatePath|$BasicNordOuest|$BasicSudOuest|$BasicSudEst|$BasicNordEst|$BasicNordOuest3857|$BasicSudOuest3857|$BasicSudEst3857|$BasicNordEst3857|$BasicNordOuest4326|$BasicSudOuest4326|$BasicSudEst4326|$BasicNordEst4326|$ZipCloudpath|$PNGCloudpath|$TiffCloudpath|" >> tmp/_NodesMap/WFS_Node_$NodeID
+
+echo "$Year|$NodeID|$OriginalPost1980Name|$OldNum|$Seine|$NomMachine|$NomMachineLowCap|$OutputFilenameSeul|$LayerHumanTitle|$WorkspaceName|$WorkspaceNameLowCap|$body|$WKT_Map_Extent|$idsource|$targetid|$layer_attribut|$Default_IDC_GEOMETRY|$PNGHTTP|$ZipHTTP$TiffHTTP|$ZipCloudpath|$TiffPrivatePath|$BasicNordOuest|$BasicSudOuest|$BasicSudEst|$BasicNordEst|$BasicNordOuest3857|$BasicSudOuest3857|$BasicSudEst3857|$BasicNordEst3857|$BasicNordOuest4326|$BasicSudOuest4326|$BasicSudEst4326|$BasicNordEst4326|$ZipCloudpath|$PNGCloudpath|$TiffCloudpath|" >> tmp/_NodesMap/WFS_Node_$NodeID
 echo "$red tmp/_NodesMap/WFS_Node_"$NodeID""
 echo  "$Year|$NodeID|$OriginalPost1980Name|$OldNum|$Seine|$NomMachine|$NomMachineLowCap|$OutputFilenameSeul|$LayerHumanTitle|$WorkspaceName|$WorkspaceNameLowCap|$body|$WKT_Map_Extent|$idsource|$targetid|$layer_attribut|$Default_IDC_GEOMETRY|$PNGHTTP|$ZipHTTP$TiffHTTP|$ZipCloudpath|$TiffPrivatePath|$BasicNordOuest|$BasicSudOuest|$BasicSudEst|$BasicNordEst|$BasicNordOuest3857|$BasicSudOuest3857|$BasicSudEst3857|$BasicNordEst3857|$BasicNordOuest4326|$BasicSudOuest4326|$BasicSudEst4326|$BasicNordEst4326|$ZipCloudpath|$PNGCloudpath|$TiffCloudpath|"
 else
@@ -286,7 +284,6 @@ echo "${white}---> Maptype                                                      
 fi
 done
 
-read
 
 #Finising WFS NODE
 IFS=$'\n'       # Processing full line (ignoring spaces)
@@ -408,12 +405,9 @@ TiffCloudpath=$(cat $NodesubMapB |awk -F'|' '{print $36}'|tr '\n' '@' | sed 's/@
 echo "${white}---> Output TiffCloudpath                             ${orange}: $TiffCloudpath"
 
 echo "$NodeID|$OriginalPost1980Name|$OldNum|$Seine|$Year|$WorkspaceNameLowCap|$WorkspaceName|$body|$WKT_Map_Extent|$idsource|$targetid|$layer_attribut|$Default_IDC_GEOMETRY|$PNGHTTP|$ZipHTTP|$TiffHTTP|$BasicNordOuest|$BasicSudOuest|$BasicSudEst|$BasicNordEst|$BasicNordOuest3857|$BasicSudOuest3857|$BasicSudEst3857|$BasicNordEst3857|$BasicNordOuest4326|$BasicSudOuest4326|$BasicSudEst4326|$BasicNordEst4326|$ZipCloudpath|$PNGCloudpath|$TiffCloudpath" >> tmp/WFSTEMP
+
 done
 echo "NodeID|OriginalPost1980Name|OldNum|Seine|Year|WorkspaceNameLowCap|WorkspaceName|body|WKT_Map_Extent|idsource|targetid|layer_attribut|Default_IDC_GEOMETRY|PNGHTTP|ZipHTTP|TiffHTTP|BasicNordOuest|BasicSudOuest|BasicSudEst|BasicNordEst|BasicNordOuest3857|BasicSudOuest3857|BasicSudEst3857|BasicNordEst3857|BasicNordOuest4326|BasicSudOuest4326|BasicSudEst4326|BasicNordEst4326|ZipCloudpath|PNGCloudpath|TiffCloudpath" > ../_Output_CSVs/_IMPORT_WFS_LAYERS.csv
-cat tmp/WFSTEMP >> ../_Output_CSVs/_IMPORT_WFS_LAYERS.csv
+cat tmp/WFSTEMP |awk NF >> ../_Output_CSVs/_IMPORT_WFS_LAYERS.csv
 
 echo "${bg_white}${black}---> Good Bye ! form WFS_Layers_fromCsv.sh${reset}"
-
-
-#add_planche24-50_ScanHD_1988
-#add_25-50_ScanHD_1985

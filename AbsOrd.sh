@@ -1637,15 +1637,17 @@ Echo "${white}---> Default information was not found yet"
 
 IDCFirst2Nbr=$(echo "$NameNoExt" |awk '{print substr($0,0,2)}')
 IDCThirdLetter=$(echo "$NameNoExt" | head -c 3 | tail -c 1 )
+
+
 if [[ "$TiffSource" == *"Feuille-"* ]]
 then
 echo "${green}---> Feuille detected !"
 #echo "${lightblue}Abscissa $Abscissa Ordinate $Ordinate"
 #wk -F'|' -v "le_nom_complet"="$Title_Name" '$3=='le_nom_complet'' Cleaned_db/title.basics_movie.csv | awk -F'|' -v "year"="$Year" '$6=='year'' > ../.Temp.film
 echo "$purple NameNoExt $NameNoExt"
-awk -F'|' -v "Cleaned_Name"="$NameNoExt" '$1=='Cleaned_Name'' Abs-Ord.txt
-Ordinate_Basic=$(awk -F'|' -v "Cleaned_Name"="$NameNoExt" '$1=='Cleaned_Name'' Abs-Ord.txt|awk -F'|' '{print $2}')
-Abscissa_Basic=$(awk -F'|' -v "Cleaned_Name"="$NameNoExt" '$1=='Cleaned_Name'' Abs-Ord.txt|awk -F'|' '{print $3}')
+awk -F'|' -v "Cleaned_Name"="$Cleaned_Name" '$1=='Cleaned_Name'' Abs-Ord.txt
+Ordinate_Basic=$(awk -F'|' -v "Cleaned_Name"="$Cleaned_Name" '$1=='Cleaned_Name'' Abs-Ord.txt|awk -F'|' '{print $2}')
+Abscissa_Basic=$(awk -F'|' -v "Cleaned_Name"="$Cleaned_Name" '$1=='Cleaned_Name'' Abs-Ord.txt|awk -F'|' '{print $3}')
 echo "$green Ordinate_Basic $Ordinate_Basic Abscissa_Basic $Abscissa_Basic"
 
 Ordinate="$Ordinate_Basic"
@@ -1656,6 +1658,9 @@ source tmp/tmp_bash
 echo $lightblue$Ordinate $Abscissa
 
 echo $red IDCThirdLetter $white $IDCThirdLetter
+
+
+
 elif [[ $IDCThirdLetter =~ [A-Z] ]]
 then
 echo "${white}---> Third letter detected ###############################"
@@ -1695,5 +1700,4 @@ echo IGCPatternAbscissa=\"$IGCPatternAbscissa\" >> tmp/tmp_bash
 
 
 echo "${bg_white}${black}---> Good Bye ! from AbsOrd.sh${reset}"
-
 

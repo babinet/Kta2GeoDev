@@ -54,9 +54,9 @@ echo "${white}---> \$Char3 discovered                                           
 echo "${white}---> \$This map number is Dpt Seine                                   ${orange}: $Lastrender"
 
 planchesNames=$(awk -F'|' -v "le_nom_completa"="$planchesNamesTMP" '$3=='le_nom_completa'' CODEX_PLANCHES.csv | awk -F'|' '{print $2, $3, $4}' OFS='|' | awk '{print $0"|"}' )
-OriginalPost1980Name=$(echo "$planchesNames" |awk -F'|' '{print $1}'|awk -F'_' '{print $1}')
-Seine=$(echo "$planchesNames" |awk -F'|' '{print $2}'|awk -F'_' '{print $1}')
-OldNum=$(echo "$planchesNames" |awk -F'|' '{print $3}'|awk -F'_' '{print $1}')
+OriginalPost1980Name=$(echo "$planchesNames" |awk -F'|' '{print $1}'|awk -F'_' '{print $1}'| awk 'NR == 1')
+Seine=$(echo "$planchesNames" |awk -F'|' '{print $2}'|awk -F'_' '{print $1}'| awk 'NR == 1')
+OldNum=$(echo "$planchesNames" |awk -F'|' '{print $3}'|awk -F'_' '{print $1}'| awk 'NR == 1')
 NodeID=$(awk -F'|' -v "lenomcompletc"="$planchesNamesTMP" '$3=='lenomcompletc'' CODEX_PLANCHES.csv | awk -F'|' '{print $1}'| awk 'NR == 1')
 
 echo OldNum=\"$OldNum\" >> tmp/tmp_bash
@@ -71,9 +71,9 @@ then
 
 PlancheFeuille=$( echo "$PlancheName_Simple"| sed 's/Feuille-//g' |awk -F'_' '{print $1}'|sed 's/-B//g'| sed 's/-Special//g')
 planchesNames=$(awk -F'|' -v "le_nom_completb"="$PlancheFeuille" '$4=='le_nom_completb'' CODEX_PLANCHES.csv | awk -F'|' '{print $2, $3, $4}' OFS='|'| awk '{print $0"|"}')
-OriginalPost1980Name=$(echo "$planchesNames" |awk -F'|' '{print $1}'|awk -F'_' '{print $1}')
-Seine=$(echo "$planchesNames" |awk -F'|' '{print $2}'|awk -F'_' '{print $1}')
-OldNum=$(echo "$planchesNames" |awk -F'|' '{print $3}'|awk -F'_' '{print $1}'| sed 's/Feuille-//g'| sed 's/-Special//g')
+OriginalPost1980Name=$(echo "$planchesNames" |awk -F'|' '{print $1}'|awk -F'_' '{print $1}'| awk 'NR == 1')
+Seine=$(echo "$planchesNames" |awk -F'|' '{print $2}'|awk -F'_' '{print $1}'| awk 'NR == 1')
+OldNum=$(echo "$planchesNames" |awk -F'|' '{print $3}'|awk -F'_' '{print $1}'| sed 's/Feuille-//g'| sed 's/-Special//g'| awk 'NR == 1')
 NodeID=$(awk -F'|' -v "lenomcompletc"="$PlancheFeuille" '$4=='lenomcompletc'' CODEX_PLANCHES.csv | awk -F'|' '{print $1}'| awk 'NR == 1')
 echo NodeID=\"$NodeID\" >> tmp/tmp_bash
 
@@ -94,9 +94,9 @@ planchesNames=$(awk -F'|' -v "lenomcompletc"="$PlancheName_Simple" '$2=='lenomco
 
 
 NodeID=$(awk -F'|' -v "lenomcompletc"="$PlancheName_Simple" '$2=='lenomcompletc'' CODEX_PLANCHES.csv | awk -F'|' '{print $1}'| awk 'NR == 1')
-OriginalPost1980Name=$(echo "$planchesNames" |awk -F'|' '{print $1}'|awk -F'_' '{print $1}')
-Seine=$(echo "$planchesNames" |awk -F'|' '{print $2}'|awk -F'_' '{print $1}')
-OldNum=$(echo "$planchesNames" |awk -F'|' '{print $3}'|awk -F'_' '{print $1}')
+OriginalPost1980Name=$(echo "$planchesNames" |awk -F'|' '{print $1}'|awk -F'_' '{print $1}'| awk 'NR == 1')
+Seine=$(echo "$planchesNames" |awk -F'|' '{print $2}'|awk -F'_' '{print $1}'| awk 'NR == 1')
+OldNum=$(echo "$planchesNames" |awk -F'|' '{print $3}'|awk -F'_' '{print $1}'| awk 'NR == 1')
 echo NodeID=\"$NodeID\" >> tmp/tmp_bash
 echo OldNum=\"$OldNum\" >> tmp/tmp_bash
 echo Seine=\"$Seine\" >> tmp/tmp_bash
@@ -214,7 +214,16 @@ echo "${white}---> \$planchesNamesTMP                                           
 echo "${white}---> \$Char3                                                          ${green}: $Char3"
 echo "${white}---> \$NodeID                                                         ${green}: $NodeID"
 echo "${white}---> \$Year                                                           ${green}: $Year"
+#(awk -v 'basicname'="$TheTitleFromlist" -F'|' '$1 == basicname".tif"' tmp/listTiffInServer.csv | awk -F'|' '{print $1}'
+
+awkresult=$(cat _Absolut_layer_extent_special.txt |awk -F'|' -v 'NameNoExt'="$NameNoExt" '$1 == NameNoExt'|awk -F'|' '{print $2}' )
+if [[ "$awkresult" == "" ]]
+then
 WKT_Map_Extent=$(echo "GEOMETRYCOLLECTION(POLYGON(($NordOuest3857, $SudOuest3857, $SudEst3857, $NordEst3857, $NordOuest3857)))")
+else
+WKT_Map_Extent="$awkresult"
+fi
+
 
 echo "${white}---> \$AbscissaMultiple     ${green}: $AbscissaMultiple"
 echo "${white}---> \$OrdinateMultiple     ${green}: $OrdinateMultiple"
